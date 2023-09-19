@@ -1,11 +1,5 @@
 import studentTypeDefs from './students';
 
-const example = /* GraphQL */ `
-  type Query {
-    hello: String!
-  }
-`;
-
-const rootTypeDefs = studentTypeDefs + example;
+const rootTypeDefs = studentTypeDefs;
 
 export default rootTypeDefs;

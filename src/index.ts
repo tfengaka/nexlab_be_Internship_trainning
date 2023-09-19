@@ -1,14 +1,14 @@
 import express, { Router } from 'express';
 import { createYoga } from 'graphql-yoga';
 
-import schema from '~/schema';
-import db, { connectDatabase, sequelize } from './models';
 import env from '~/config/env';
+import schema from '~/schema';
+import { connectDatabase, sequelize } from './models';
 
 function initialServer() {
   const app = express();
 
-  sequelize.sync({ force: true }).then(() => {
+  sequelize.sync({ force: false }).then(() => {
     const yoga = createYoga({
       schema,
       cors: {

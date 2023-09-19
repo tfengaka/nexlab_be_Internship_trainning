@@ -25,10 +25,6 @@ interface SignUpInput extends SignInInput {
 }
 
 interface AuthOutput {
-  code: number;
-  message: string;
-  data: {
-    student: StudentData;
-    accessToken: string;
-  };
+  student: StudentData;
+  accessToken: string;
 }

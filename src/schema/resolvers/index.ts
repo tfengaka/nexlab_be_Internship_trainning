@@ -1,25 +1,11 @@
-import { YogaInitialContext } from 'graphql-yoga';
-import { SignIn, SignUp } from '~/services/students.services';
+import studentResolvers from './students';
 
 const rootResolvers = {
   Query: {
-    hello: () => 'hello world',
+    ...studentResolvers.Query,
   },
   Mutation: {
-    signUp: async (_: any, args: { form: SignUpInput }, context: YogaInitialContext) => {
-      try {
-        return await SignUp(args.form);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    signIn: async (_: any, args: { form: SignInInput }, context: YogaInitialContext) => {
-      try {
-        return await SignIn(args.form);
-      } catch (error) {
-        console.error(error);
-      }
-    },
+    ...studentResolvers.Mutation,
   },
 };
 
