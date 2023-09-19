@@ -5,11 +5,6 @@ interface StudentModel {
   password: string;
 }
 
-interface StudentData extends StudentModel {
-  createdAt?: string;
-  updatedAt?: string;
-}
-
 interface ClassModel {
   id?: string;
   className: string;
@@ -27,4 +22,14 @@ interface SignUpInput extends SignInInput {
 interface AuthOutput {
   student: StudentData;
   accessToken: string;
+}
+
+interface UpdateStudentInput {
+  email: string;
+  fullName: string;
+}
+
+interface ChangePasswordInput {
+  oldPassword: string;
+  newPassword: string;
 }

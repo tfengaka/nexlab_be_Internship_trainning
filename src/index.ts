@@ -8,7 +8,7 @@ import { connectDatabase, sequelize } from './models';
 function initialServer() {
   const app = express();
 
-  sequelize.sync({ force: false }).then(() => {
+  sequelize.sync({ alter: true, force: false }).then(() => {
     const yoga = createYoga({
       schema,
       cors: {
@@ -23,7 +23,7 @@ function initialServer() {
     app.use(yoga.graphqlEndpoint, yogaRouter);
 
     app.listen(env.PORT, () => {
-      console.log(`🚀 GraphQL API server is running at http://localhost:${env.PORT}/graphql`);
+      console.log(`\n🚀 GraphQL API server is running at http://localhost:${env.PORT}/graphql`);
     });
   });
 }
