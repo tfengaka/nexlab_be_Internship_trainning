@@ -1,5 +1,13 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
+interface StudentModel {
+  id?: string;
+  fullName: string;
+  email: string;
+  password: string;
+  status?: Status;
+}
+
 class Student extends Model<StudentModel> {
   declare id: string;
   declare fullName: string;

@@ -73,7 +73,7 @@ export const SignIn = async ({ email, password }: SignInInput): Promise<AuthOutp
   };
 };
 
-export const getCurrentStudent = async (token: string) => {
+export const getCurrentStudent = async (token: string, hasClasses: boolean = true) => {
   if (!token)
     throw new GraphQLError('Invalid Token!', {
       extensions: {
@@ -94,7 +94,13 @@ export const getCurrentStudent = async (token: string) => {
     }
   });
 
-  const student = await models.Student.findByPk(studentId);
+  const student = hasClasses
+    ? await models.Student.findByPk(studentId, {
+        include: {
+          model: models.Class,
+        },
+      })
+    : await models.Student.findByPk(studentId);
   if (!student)
     throw new GraphQLError('Student not found!', {
       extensions: {
@@ -109,6 +115,13 @@ export const getAllStudents = async () => {
 };
 
 export const removeStudentByPk = async (id: string) => {
+  if (!id)
+    throw new GraphQLError('Invalid ID!', {
+      extensions: {
+        code: 'BAD_REQUEST',
+      },
+    });
+
   const student = await models.Student.findByPk(id);
   if (!student)
     throw new GraphQLError('Student not found!', {
@@ -143,7 +156,7 @@ export const updateStudentDataByPk = async (id: string, data: UpdateStudentInput
 };
 
 export const changePassword = async (token: string, form: ChangePasswordInput) => {
-  const student = await getCurrentStudent(token);
+  const student = await getCurrentStudent(token, false);
   const oldPasswordMatch = await bcrypt.compare(form.oldPassword, student.password);
   if (!oldPasswordMatch)
     throw new GraphQLError('Current password is incorrect!', {
@@ -159,4 +172,30 @@ export const changePassword = async (token: string, form: ChangePasswordInput) =
   return {
     messages: 'Password has been changed!',
   };
+};
+
+export const enrollClass = async (token: string, classId: string) => {
+  const student = await getCurrentStudent(token, false);
+  if (!classId)
+    throw new GraphQLError('Invalid ClassID!', {
+      extensions: {
+        code: 'BAD_REQUEST',
+      },
+    });
+  const classData = await models.Class.findByPk(classId);
+  if (classData === null || classData.status !== 'active')
+    throw new GraphQLError('This class is not available for registration!', {
+      extensions: {
+        code: 'FORBIDDEN',
+      },
+    });
+
+  const enrollment = await models.Enrollment.create({ studentId: student.id, classId });
+  if (!enrollment)
+    throw new GraphQLError(`There was an error during the registration process for ${classData.className} class`, {
+      extensions: {
+        code: 'INTERNAL_SERVER_ERROR',
+      },
+    });
+  return { messages: `Registration for ${classData.className} class is successful!` };
 };

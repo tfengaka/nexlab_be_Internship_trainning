@@ -1,3 +1,10 @@
+const studentType = `id: ID!
+fullName: String!
+email: String!
+status: String!
+createdAt: String
+updatedAt: String`;
+
 const studentTypeDefs = /* GraphQL */ `
   input SignInInput {
     email: String!
@@ -21,22 +28,19 @@ const studentTypeDefs = /* GraphQL */ `
   }
 
   type Student {
-    id: ID!
-    fullName: String!
-    email: String!
-    status: String!
-    createdAt: String
-    updatedAt: String
-    # classes: [Class]!
+    ${studentType}
   }
-
+  type StudentWithClasses {
+    ${studentType}
+    classes: [Class]!
+  }
   type AuthOutput {
     student: Student!
     accessToken: String!
   }
 
   type Query {
-    getMe: Student!
+    getMe: StudentWithClasses!
     getStudents: [Student]!
   }
 
@@ -46,6 +50,7 @@ const studentTypeDefs = /* GraphQL */ `
     updateStudentByPk(pk: ID!, data: UpdateStudentInput!): Student!
     deleteStudentByPk(pk: ID!): MessagesOutput!
     changePassword(form: ChangePasswordForm!): MessagesOutput!
+    enrollClass(classId: ID!): MessagesOutput!
   }
 `;
 

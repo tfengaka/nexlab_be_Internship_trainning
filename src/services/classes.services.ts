@@ -1,7 +1,12 @@
 import { GraphQLError } from 'graphql';
 import models from '~/models';
 
-export const getAllClasses = async () => await models.Class.findAll({ include: models.Student });
+export const getAllClasses = async () =>
+  await models.Class.findAll({
+    where: {
+      status: 'active',
+    },
+  });
 
 export const getClassesByStudentId = async (studentId: string) => {
   if (!studentId)

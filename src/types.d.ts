@@ -1,16 +1,4 @@
-interface StudentModel {
-  id?: string;
-  fullName: string;
-  email: string;
-  password: string;
-  status?: string;
-}
-
-interface ClassModel {
-  id?: string;
-  className: string;
-  status?: string;
-}
+type Status = 'pending' | 'active' | 'completed';
 
 interface SignInInput {
   email: string;

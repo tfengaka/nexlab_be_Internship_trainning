@@ -1,6 +1,13 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
-class Enrollment extends Model {
+interface EnrollmentModel {
+  id?: number | string;
+  studentId: string;
+  classId: string;
+  status?: Status;
+}
+
+class Enrollment extends Model<EnrollmentModel> {
   public declare studentId: string;
   public declare classId: string;
   public declare status: string;
