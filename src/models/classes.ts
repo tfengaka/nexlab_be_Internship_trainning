@@ -16,6 +16,7 @@ export default (sequelize: Sequelize) =>
       className: {
         type: DataTypes.TEXT,
         allowNull: false,
+        unique: true,
       },
     },
     {

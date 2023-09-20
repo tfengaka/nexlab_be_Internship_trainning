@@ -33,10 +33,6 @@ const studentTypeDefs = /* GraphQL */ `
     accessToken: String!
   }
 
-  type MessagesOutput {
-    messages: String!
-  }
-
   type Query {
     getMe: Student!
     getStudents: [Student]!
