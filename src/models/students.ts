@@ -5,6 +5,7 @@ class Student extends Model<StudentModel> {
   declare fullName: string;
   declare email: string;
   declare password: string;
+  declare status: string;
 }
 
 export default (sequelize: Sequelize) =>
@@ -23,10 +24,20 @@ export default (sequelize: Sequelize) =>
         type: DataTypes.TEXT,
         allowNull: false,
         unique: true,
+        validate: {
+          isEmail: {
+            msg: 'Please enter a valid email address!',
+          },
+        },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      status: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        defaultValue: 'active',
       },
     },
     {

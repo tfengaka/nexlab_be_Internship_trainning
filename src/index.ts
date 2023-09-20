@@ -23,7 +23,7 @@ function initialServer() {
     app.use(yoga.graphqlEndpoint, yogaRouter);
 
     app.listen(env.PORT, () => {
-      console.log(`\n🚀 GraphQL API server is running at http://localhost:${env.PORT}/graphql`);
+      console.log(`\n🚀 GraphQL API server is running at http://localhost:${env.PORT}/graphql\n`);
     });
   });
 }

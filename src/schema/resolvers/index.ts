@@ -7,6 +7,7 @@ const rootResolvers = {
   },
   Mutation: {
     ...studentResolvers.Mutation,
+    ...classResolvers.Mutation,
   },
 };
 

@@ -3,6 +3,7 @@ import { Dialect, Sequelize } from 'sequelize';
 import env from '~/config/env';
 import StudentModel from './students';
 import ClassModel from './classes';
+import EnrollmentsModel from './enrollments';
 
 const dbName = env.DB_NAME as string;
 const dbUser = env.DB_USER as string;
@@ -23,9 +24,16 @@ export const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
 
 const Student = StudentModel(sequelize);
 const Class = ClassModel(sequelize);
+const Enrollment = EnrollmentsModel(sequelize);
 
-Student.belongsToMany(Class, { through: 'class_students' });
-Class.belongsToMany(Student, { through: 'class_students' });
+Student.belongsToMany(Class, {
+  through: Enrollment,
+});
+Class.belongsToMany(Student, {
+  through: Enrollment,
+});
 
-export const connectDatabase = async () => await sequelize.authenticate();
-export default { Student, Class };
+export const connectDatabase = async () => {
+  await sequelize.authenticate();
+};
+export default { Student, Class, Enrollment };

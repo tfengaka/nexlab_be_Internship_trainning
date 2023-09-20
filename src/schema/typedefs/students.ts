@@ -24,8 +24,10 @@ const studentTypeDefs = /* GraphQL */ `
     id: ID!
     fullName: String!
     email: String!
+    status: String!
     createdAt: String
     updatedAt: String
+    # classes: [Class]!
   }
 
   type AuthOutput {

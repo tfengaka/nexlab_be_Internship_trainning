@@ -80,6 +80,7 @@ export const getCurrentStudent = async (token: string) => {
         code: 'UNAUTHORIZED',
       },
     });
+
   let studentId = '';
   jwt.verify(token, env.JWT_SECRET, (err, decoded) => {
     if (err)
@@ -92,6 +93,7 @@ export const getCurrentStudent = async (token: string) => {
       studentId = decoded?.sub as string;
     }
   });
+
   const student = await models.Student.findByPk(studentId);
   if (!student)
     throw new GraphQLError('Student not found!', {
@@ -99,7 +101,6 @@ export const getCurrentStudent = async (token: string) => {
         code: 'NOT_FOUND',
       },
     });
-
   return student;
 };
 

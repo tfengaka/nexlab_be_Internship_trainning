@@ -3,11 +3,13 @@ interface StudentModel {
   fullName: string;
   email: string;
   password: string;
+  status?: string;
 }
 
 interface ClassModel {
   id?: string;
   className: string;
+  status?: string;
 }
 
 interface SignInInput {
