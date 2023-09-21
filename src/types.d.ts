@@ -1,4 +1,5 @@
 type Status = 'pending' | 'active' | 'completed';
+type NodeEnv = 'development' | 'production' | 'staging';
 
 interface SignInInput {
   email: string;

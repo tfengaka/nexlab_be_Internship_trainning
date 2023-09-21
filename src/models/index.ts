@@ -5,15 +5,8 @@ import StudentModel from './students';
 import ClassModel from './classes';
 import EnrollmentsModel from './enrollments';
 
-const dbName = env.DB_NAME as string;
-const dbUser = env.DB_USER as string;
-const dbPassword = env.DB_PASSWORD as string;
-const dbHost = env.DB_HOST;
-const dbDialect = env.DB_DIALECT as Dialect;
-
-export const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
-  host: dbHost,
-  dialect: dbDialect,
+const connectURL = env.DB_URL || `postgres://postgres:postgres@127.0.0.1:5432/${env.DB_NAME}`;
+export const sequelize = new Sequelize(connectURL, {
   pool: {
     max: 5,
     min: 0,
