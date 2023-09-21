@@ -10,7 +10,6 @@ interface SignUpInput extends SignInInput {
 }
 
 interface AuthOutput {
-  student: StudentData;
   accessToken: string;
 }
 

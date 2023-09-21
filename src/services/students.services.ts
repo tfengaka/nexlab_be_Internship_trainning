@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import env from '~/config/env';
 import models from '~/models';
 
-export const SignUp = async ({ email, password, fullName }: SignUpInput): Promise<AuthOutput> => {
+export const SignUp = async ({ email, password, fullName }: SignUpInput) => {
   if (!email || !password || !fullName)
     throw new GraphQLError('Invalid Input!', {
       extensions: {
@@ -34,12 +34,11 @@ export const SignUp = async ({ email, password, fullName }: SignUpInput): Promis
   });
 
   return {
-    student,
     accessToken,
   };
 };
 
-export const SignIn = async ({ email, password }: SignInInput): Promise<AuthOutput> => {
+export const SignIn = async ({ email, password }: SignInInput) => {
   if (!email || !password)
     throw new GraphQLError('Invalid Input!', {
       extensions: {
@@ -69,7 +68,6 @@ export const SignIn = async ({ email, password }: SignInInput): Promise<AuthOutp
 
   return {
     accessToken,
-    student,
   };
 };
 
