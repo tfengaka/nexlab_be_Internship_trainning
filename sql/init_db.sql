@@ -8,3 +8,14 @@ CREATE VIEW student_stats AS
 	FROM students
 	LEFT JOIN enrollments ON students."id" = enrollments."studentId"
 	GROUP BY students."id";
+
+-- 6/ create function (file.sql) search_student
+CREATE OR REPLACE FUNCTION search_student(search_text TEXT) 
+RETURNS TABLE (student_id UUID, student_name TEXT) AS $Students$
+BEGIN
+    RETURN QUERY
+    SELECT students."id" as student_id, students."fullName" as student_name
+    FROM students
+    WHERE students."fullName" ILIKE '%' || search_text || '%';
+END;
+$Students$ LANGUAGE plpgsql;

@@ -1,12 +1,11 @@
-import { Dialect, Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize';
 
 import env from '~/config/env';
-import StudentModel from './students';
 import ClassModel from './classes';
 import EnrollmentsModel from './enrollments';
+import StudentModel from './students';
 
-const connectURL = env.DB_URL || `postgres://postgres:postgres@127.0.0.1:5432/${env.DB_NAME}`;
-export const sequelize = new Sequelize(connectURL, {
+export const sequelize = new Sequelize(env.DB_URL as string, {
   pool: {
     max: 5,
     min: 0,
