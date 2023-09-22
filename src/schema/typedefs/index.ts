@@ -1,11 +1,11 @@
 import studentTypeDefs from './students';
+import classTypeDefs from './classes';
 
-const example = /* GraphQL */ `
-  type Query {
-    hello: String!
+const commonTypes = /* GraphQL */ `
+  type MessagesOutput {
+    messages: String!
   }
 `;
 
-const rootTypeDefs = studentTypeDefs + example;
-
+const rootTypeDefs = commonTypes + studentTypeDefs + classTypeDefs;
 export default rootTypeDefs;

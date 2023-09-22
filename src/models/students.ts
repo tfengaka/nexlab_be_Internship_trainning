@@ -1,10 +1,19 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
+interface StudentModel {
+  id?: string;
+  fullName: string;
+  email: string;
+  password: string;
+  status?: Status;
+}
+
 class Student extends Model<StudentModel> {
   declare id: string;
   declare fullName: string;
   declare email: string;
   declare password: string;
+  declare status: string;
 }
 
 export default (sequelize: Sequelize) =>
@@ -22,10 +31,21 @@ export default (sequelize: Sequelize) =>
       email: {
         type: DataTypes.TEXT,
         allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: {
+            msg: 'Please enter a valid email address!',
+          },
+        },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      status: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        defaultValue: 'active',
       },
     },
     {

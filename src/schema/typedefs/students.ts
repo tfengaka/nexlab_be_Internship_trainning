@@ -1,41 +1,55 @@
-const studentTypeDefs = /* GraphQL */ `
-  type Student {
-    id: String
-    fullName: String
-    email: String
-    createdAt: String
-    updatedAt: String
-  }
+const studentType = `id: ID!
+fullName: String!
+email: String!
+status: String!
+createdAt: String
+updatedAt: String`;
 
+const studentTypeDefs = /* GraphQL */ `
   input SignInInput {
-    email: String
-    password: String
+    email: String!
+    password: String!
   }
 
   input SignUpInput {
-    fullName: String
-    email: String
-    password: String
+    fullName: String!
+    email: String!
+    password: String!
   }
 
-  type AuthOutputData {
-    student: Student
+  input UpdateStudentInput {
+    email: String!
+    fullName: String!
+  }
+
+  input ChangePasswordForm {
+    oldPassword: String!
+    newPassword: String!
+  }
+
+  type Student {
+    ${studentType}
+  }
+  type StudentWithClasses {
+    ${studentType}
+    classes: [Class]!
+  }
+  type AuthOutput {
     accessToken: String!
   }
 
-  type AuthOutput {
-    data: AuthOutputData!
-    code: Int!
-    message: String!
-  }
-
   type Query {
-    getMe: Student!
+    getMe: StudentWithClasses!
+    getStudents: [Student]!
   }
 
   type Mutation {
-    signIn(form: SignInInput!): AuthOutput
-    signUp(form: SignUpInput!): AuthOutput
+    signIn(form: SignInInput!): AuthOutput!
+    signUp(form: SignUpInput!): AuthOutput!
+    updateStudentByPk(pk: ID!, data: UpdateStudentInput!): Student!
+    deleteStudentByPk(pk: ID!): MessagesOutput!
+    changePassword(form: ChangePasswordForm!): MessagesOutput!
+    enrollClass(classId: ID!): MessagesOutput!
   }
 `;
 

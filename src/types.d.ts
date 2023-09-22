@@ -1,19 +1,5 @@
-interface StudentModel {
-  id?: string;
-  fullName: string;
-  email: string;
-  password: string;
-}
-
-interface StudentData extends StudentModel {
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-interface ClassModel {
-  id?: string;
-  className: string;
-}
+type Status = 'pending' | 'active' | 'completed';
+type NodeEnv = 'development' | 'production' | 'staging';
 
 interface SignInInput {
   email: string;
@@ -25,10 +11,15 @@ interface SignUpInput extends SignInInput {
 }
 
 interface AuthOutput {
-  code: number;
-  message: string;
-  data: {
-    student: StudentData;
-    accessToken: string;
-  };
+  accessToken: string;
+}
+
+interface UpdateStudentInput {
+  email: string;
+  fullName: string;
+}
+
+interface ChangePasswordInput {
+  oldPassword: string;
+  newPassword: string;
 }

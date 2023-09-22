@@ -1,8 +1,15 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
+interface ClassModel {
+  id?: string;
+  className: string;
+  status?: Status;
+}
+
 class Class extends Model<ClassModel> {
   declare id: string;
   declare className: string;
+  declare status: string;
 }
 
 export default (sequelize: Sequelize) =>
@@ -16,6 +23,12 @@ export default (sequelize: Sequelize) =>
       className: {
         type: DataTypes.TEXT,
         allowNull: false,
+        unique: true,
+      },
+      status: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        defaultValue: 'active',
       },
     },
     {
