@@ -1,14 +1,14 @@
 version: "3.3"
 services:
-  app:
-    container_name: graphql-api
+  express-app:
+    container_name: express
     build: .
     ports:
       - ${PORT}:${PORT}
     depends_on:
       - postgres
     volumes:
-      - .:/usr/src/app/nexlab_week1
+      - .:/usr/src/app/nexlab_be_intern
     env_file:
       - .env
   hasura-engine:

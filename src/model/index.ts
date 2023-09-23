@@ -5,9 +5,9 @@ import Class from './class';
 import Enrollment from './enrollment';
 
 export const sequelize = new Sequelize({
-  database: env.DB_NAME,
   dialect: 'postgres',
   host: env.DB_HOST,
+  database: env.DB_NAME,
   username: env.DB_USER,
   password: env.DB_PASSWORD,
   models: [Student, Class, Enrollment],
