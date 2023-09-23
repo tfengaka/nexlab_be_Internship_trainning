@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql';
 import jwt from 'jsonwebtoken';
 
 import env from '~/config/env';
-import models from '~/models';
+import models from '~/model';
 
 export const SignUp = async ({ email, password, fullName }: SignUpInput) => {
   if (!email || !password || !fullName)
@@ -26,7 +26,7 @@ export const SignUp = async ({ email, password, fullName }: SignUpInput) => {
   const student = await models.Student.create({
     email,
     password: hashedPassword,
-    fullName,
+    full_name: fullName,
   });
 
   const accessToken = jwt.sign({ sub: student.id }, env.JWT_SECRET, {
@@ -128,7 +128,7 @@ export const removeStudentByPk = async (id: string) => {
       },
     });
 
-  const name = student.fullName;
+  const name = student.full_name;
   await student.destroy();
 
   return {
@@ -145,7 +145,7 @@ export const updateStudentDataByPk = async (id: string, data: UpdateStudentInput
       },
     });
 
-  student.fullName = data.fullName;
+  student.full_name = data.fullName;
   student.email = data.email;
 
   student.save();
@@ -188,12 +188,12 @@ export const enrollClass = async (token: string, classId: string) => {
       },
     });
 
-  const enrollment = await models.Enrollment.create({ studentId: student.id, classId });
+  const enrollment = await models.Enrollment.create({ student_id: student.id, class_id: classId });
   if (!enrollment)
-    throw new GraphQLError(`There was an error during the registration process for ${classData.className} class`, {
+    throw new GraphQLError(`There was an error during the registration process for ${classData.class_name} class`, {
       extensions: {
         code: 'INTERNAL_SERVER_ERROR',
       },
     });
-  return { messages: `Registration for ${classData.className} class is successful!` };
+  return { messages: `Registration for ${classData.class_name} class is successful!` };
 };

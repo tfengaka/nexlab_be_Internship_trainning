@@ -8,7 +8,7 @@ import {
   getCurrentStudent,
   removeStudentByPk,
   updateStudentDataByPk,
-} from '~/services/students.services';
+} from '~/service/student.service';
 
 const studentResolvers = {
   Query: {

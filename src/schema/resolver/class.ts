@@ -6,7 +6,7 @@ import {
   getClassDataByPk,
   getClassesByStudentId,
   updateClassNameById,
-} from '~/services/classes.services';
+} from '~/service/class.service';
 
 const classResolvers = {
   Query: {

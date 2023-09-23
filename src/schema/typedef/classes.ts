@@ -1,5 +1,5 @@
 const classType = `id: ID!
-className: String!
+class_name: String!
 status: String!
 createdAt: String
 updatedAt: String`;
