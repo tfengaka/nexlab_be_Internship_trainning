@@ -1,5 +1,5 @@
 const studentType = `id: ID!
-fullName: String!
+full_name: String!
 email: String!
 status: String!
 createdAt: String

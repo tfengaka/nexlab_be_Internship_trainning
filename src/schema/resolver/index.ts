@@ -1,5 +1,5 @@
-import studentResolvers from './students';
-import classResolvers from './classes';
+import studentResolvers from './student';
+import classResolvers from './class';
 const rootResolvers = {
   Query: {
     ...studentResolvers.Query,

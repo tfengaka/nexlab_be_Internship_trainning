@@ -3,7 +3,7 @@ import { createYoga } from 'graphql-yoga';
 
 import env from '~/config/env';
 import schema from '~/schema';
-import { connectDatabase, sequelize } from './models';
+import { connectDatabase, sequelize } from './model';
 
 function initialServer() {
   const app = express();

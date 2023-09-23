@@ -1,28 +1,14 @@
-version: "3"
+version: "3.3"
 services:
-  postgres:
-    image: postgres:15
-    container_name: postgres
-    restart: always
-    ports:
-      - 5433:5432
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    env_file:
-      - .env
-  app:
-    container_name: graphql-api
+  express-app:
+    container_name: express
     build: .
     ports:
       - ${PORT}:${PORT}
     depends_on:
       - postgres
     volumes:
-      - .:/usr/src/app/nexlab_week1
+      - .:/usr/src/app/nexlab_be_intern
     env_file:
       - .env
   hasura-engine:
@@ -33,16 +19,9 @@ services:
     restart: always
     environment:
       ## postgres database to store Hasura metadata
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: ${DB_URL}
-      PG_DATABASE_URL: ${DB_URL}
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: ${PG_DATABASE_URL}
+      PG_DATABASE_URL: ${PG_DATABASE_URL}
       ## enable the console served by server
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
-      ## enable debugging mode. It is recommended to disable this in production
-      HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      ## uncomment next line to run console offline (i.e load console assets from server instead of CDN)
-      # HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
       ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-volumes:
-  db_data:

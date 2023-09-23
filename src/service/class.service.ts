@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql';
-import models from '~/models';
+import models from '~/model';
 
 export const getAllClasses = async () =>
   await models.Class.findAll({
@@ -80,11 +80,7 @@ export const updateClassNameById = async (id: string, name: string) => {
       },
     });
 
-  const targetClass = await models.Class.findByPk(id, {
-    include: {
-      model: models.Student,
-    },
-  });
+  const targetClass = await models.Class.findByPk(id);
   if (!targetClass)
     throw new GraphQLError('Class cant found!', {
       extensions: {
@@ -92,7 +88,7 @@ export const updateClassNameById = async (id: string, name: string) => {
       },
     });
 
-  targetClass.className = name;
+  targetClass.class_name = name;
   const updatedClass = await targetClass.save();
   return updatedClass;
 };
