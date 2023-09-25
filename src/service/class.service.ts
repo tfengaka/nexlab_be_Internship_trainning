@@ -62,14 +62,14 @@ export const createClass = async (name: string) => {
       },
     });
 
-  const exitsClass = await models.Class.findOne({ where: { className: name } });
+  const exitsClass = await models.Class.findOne({ where: { class_name: name } });
   if (exitsClass)
     throw new GraphQLError('Class is already exists!', {
       extensions: {
         code: 'CONFLICT',
       },
     });
-  return await models.Class.create({ className: name }, { validate: true });
+  return await models.Class.create({ class_name: name }, { validate: true });
 };
 
 export const updateClassNameById = async (id: string, name: string) => {

@@ -35,7 +35,7 @@ const studentTypeDefs = /* GraphQL */ `
     classes: [Class]!
   }
   type AuthOutput {
-    accessToken: String!
+    access_token: String!
   }
 
   type Query {

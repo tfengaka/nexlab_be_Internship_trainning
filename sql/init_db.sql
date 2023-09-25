@@ -1,21 +1,23 @@
 -- 5 / create view(file.sql) student_stats(student_id, register_class_count, unregister_class_count) --
-CREATE VIEW student_stats AS
+CREATE OR REPLACE VIEW student_stats AS
 	SELECT
-			students."id" AS student_id,
-			students."fullName" AS student_name,
-			COUNT(DISTINCT enrollments."classId") AS register_class_count,
-			(SELECT COUNT(*) FROM classes) - COUNT(DISTINCT enrollments."classId") AS unregister_class_count
-	FROM students
-	LEFT JOIN enrollments ON students."id" = enrollments."studentId"
-	GROUP BY students."id";
+			student."id" AS student_id,
+			student."full_name" AS student_name,
+			COUNT(DISTINCT enrollment."class_id") AS register_class_count,
+			(SELECT COUNT(*) FROM class) - COUNT(DISTINCT enrollment."class_id") AS unregister_class_count
+	FROM student
+	LEFT JOIN enrollment ON student."id" = enrollment."student_id"
+	GROUP BY student."id";
 
 -- 6/ create function (file.sql) search_student
-CREATE OR REPLACE FUNCTION search_student(search_text TEXT) 
-RETURNS TABLE (student_id UUID, student_name TEXT) AS $student_result$
+CREATE INDEX idx_student_id ON student(id);
+CREATE TABLE student_search_result(student_id uuid, student_name text);
+CREATE OR REPLACE FUNCTION search_student(search_text text)
+  RETURNS SETOF student_search_result AS $$
 BEGIN
     RETURN QUERY
-    SELECT students."id" as student_id, students."fullName" as student_name
-    FROM students
-    WHERE students."fullName" ILIKE '%' || search_text || '%';
+    SELECT student."id" as student_id, student."full_name" as student_name
+    FROM student
+    WHERE student."full_name" ILIKE '%' || search_text || '%';
 END;
-$student_result$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;

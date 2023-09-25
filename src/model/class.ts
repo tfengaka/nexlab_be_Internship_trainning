@@ -5,7 +5,7 @@ import Enrollment from './enrollment';
 
 interface IClassAttributes {
   id: string;
-  className: string;
+  class_name: string;
   status: Status;
 }
 interface IClassCreationAttributes extends Optional<IClassAttributes, 'id' | 'status'> {}

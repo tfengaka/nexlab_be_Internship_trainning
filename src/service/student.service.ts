@@ -29,12 +29,12 @@ export const SignUp = async ({ email, password, fullName }: SignUpInput) => {
     full_name: fullName,
   });
 
-  const accessToken = jwt.sign({ sub: student.id }, env.JWT_SECRET, {
+  const access_token = jwt.sign({ sub: student.id }, env.JWT_SECRET, {
     expiresIn: '24h',
   });
 
   return {
-    accessToken,
+    access_token,
   };
 };
 
@@ -62,12 +62,12 @@ export const SignIn = async ({ email, password }: SignInInput) => {
       },
     });
 
-  const accessToken = jwt.sign({ sub: student.id }, env.JWT_SECRET, {
+  const access_token = jwt.sign({ sub: student.id }, env.JWT_SECRET, {
     expiresIn: '24h',
   });
 
   return {
-    accessToken,
+    access_token,
   };
 };
 
