@@ -1,0 +1,11 @@
+table:
+  name: class
+  schema: public
+array_relationships:
+  - name: enrollments
+    using:
+      foreign_key_constraint_on:
+        column: class_id
+        table:
+          name: enrollment
+          schema: public

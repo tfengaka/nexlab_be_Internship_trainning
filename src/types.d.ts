@@ -11,7 +11,7 @@ interface SignUpInput extends SignInInput {
 }
 
 interface AuthOutput {
-  accessToken: string;
+  access_token: string;
 }
 
 interface UpdateStudentInput {

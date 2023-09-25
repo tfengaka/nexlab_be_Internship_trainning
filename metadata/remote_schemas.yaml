@@ -1,0 +1,7 @@
+- name: express-api
+  definition:
+    url: '{{REMOTE_SCHEMA_ENDPOINT}}'
+    timeout_seconds: 60
+    customization: {}
+    forward_client_headers: true
+  comment: ""
