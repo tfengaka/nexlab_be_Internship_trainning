@@ -1,13 +1,13 @@
+import cors from 'cors';
 import express, { Router } from 'express';
 import { createYoga } from 'graphql-yoga';
-
 import env from '~/config/env';
 import schema from '~/schema';
 import { connectDatabase } from './model';
 
 function initialServer() {
   const app = express();
-
+  app.use(cors());
   const yoga = createYoga({
     schema,
     cors: {
@@ -18,7 +18,6 @@ function initialServer() {
   });
   const yogaRouter = Router();
   yogaRouter.use(yoga);
-
   app.use(yoga.graphqlEndpoint, yogaRouter);
 
   app.listen(env.PORT, () => {
