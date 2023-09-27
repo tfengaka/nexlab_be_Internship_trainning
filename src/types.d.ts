@@ -23,3 +23,12 @@ interface ChangePasswordInput {
   oldPassword: string;
   newPassword: string;
 }
+
+interface ActionPayload<T> {
+  action: {
+    name: string;
+  };
+  input: T;
+  request_query: string;
+  session_variables: Record<string, string>;
+}
