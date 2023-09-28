@@ -1,7 +1,5 @@
 import { YogaInitialContext } from 'graphql-yoga';
 import {
-  SignIn,
-  SignUp,
   changePassword,
   enrollClass,
   getAllStudents,
@@ -24,22 +22,6 @@ const studentResolvers = {
     getStudents: async () => await getAllStudents(),
   },
   Mutation: {
-    signUp: async (_: any, args: { form: SignUpInput }) => {
-      try {
-        return await SignUp(args.form);
-      } catch (error) {
-        console.error(error);
-        return error;
-      }
-    },
-    signIn: async (_: any, args: { form: SignInInput }) => {
-      try {
-        return await SignIn(args.form);
-      } catch (error) {
-        console.error(error);
-        return error;
-      }
-    },
     deleteStudentByPk: async (_: any, args: { pk: string }) => {
       try {
         return await removeStudentByPk(args.pk);
@@ -48,15 +30,15 @@ const studentResolvers = {
         return error;
       }
     },
-    updateStudentByPk: async (_: any, args: { pk: string; data: UpdateStudentInput }) => {
+    updateStudentByPk: async (_: any, args: { pk: string; form: FormUpdateStudent }) => {
       try {
-        return await updateStudentDataByPk(args.pk, args.data);
+        return await updateStudentDataByPk(args.pk, args.form);
       } catch (error) {
         console.error(error);
         return error;
       }
     },
-    changePassword: async (_: any, args: { form: ChangePasswordInput }, context: YogaInitialContext) => {
+    changePassword: async (_: any, args: { form: FormEditPasswordInput }, context: YogaInitialContext) => {
       try {
         const token = context.request.headers.get('authorization')?.split(' ')[1] as string;
         return await changePassword(token, args.form);

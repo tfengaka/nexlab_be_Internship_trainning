@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "module": "CommonJS", // Quy định output module được sử dụng
+    "module": "CommonJS",
     "moduleResolution": "node", //
-    "target": "ES2020", // Target ouput cho code
+    "target": "ES2020",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "outDir": "dist", // Đường dẫn output cho thư mục build
-    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "outDir": "dist",
+    "esModuleInterop": true,
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    "baseUrl": ".", // Đường dẫn base cho các import
+    "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"] // Đường dẫn tương đối cho các import (alias)
     }
@@ -17,6 +17,6 @@
   "ts-node": {
     "require": ["tsconfig-paths/register"]
   },
-  "files": ["src/types.d.ts"], // Các file dùng để defined global type cho dự án
-  "include": ["src/**/*"] // Đường dẫn include cho các file cần build
+  "files": ["src/types.d.ts"],
+  "include": ["src/**/*"]
 }

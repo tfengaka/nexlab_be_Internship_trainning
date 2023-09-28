@@ -1,19 +1,27 @@
 type Mutation {
   sign_in(
-    email: String!
-    password: String!
-  ): AuthResponse
+    form: FormSignInInput!
+  ): AuthOutput!
 }
 
 type Mutation {
   sign_up(
-    email: String!
-    password: String!
-    fullName: String!
-  ): AuthResponse!
+    form: FormSignUpInput!
+  ): AuthOutput!
 }
 
-type AuthResponse {
+input FormSignInInput {
+  email: String!
+  password: String!
+}
+
+input FormSignUpInput {
+  full_name: String!
+  email: String!
+  password: String!
+}
+
+type AuthOutput {
   access_token: String!
 }
 

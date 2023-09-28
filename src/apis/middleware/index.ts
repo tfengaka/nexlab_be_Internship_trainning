@@ -2,9 +2,9 @@ import { Request, Response, Router } from 'express';
 import { HasuraHeader, Role } from '~/enum';
 import { getCurrentStudent } from '~/service/student.service';
 
-const authRouter: Router = Router();
+const router: Router = Router();
 
-authRouter.get('', async (req: Request, res: Response) => {
+router.get('', async (req: Request, res: Response) => {
   try {
     const bearer_token = req.headers?.authorization;
     if (!bearer_token)
@@ -20,7 +20,7 @@ authRouter.get('', async (req: Request, res: Response) => {
       });
 
     return res.json({
-      [HasuraHeader.Role]: 'user',
+      [HasuraHeader.Role]: Role.User,
       [HasuraHeader.UserId]: currentUser.id,
     });
   } catch (error) {
@@ -31,4 +31,4 @@ authRouter.get('', async (req: Request, res: Response) => {
   }
 });
 
-export { authRouter };
+export { router };

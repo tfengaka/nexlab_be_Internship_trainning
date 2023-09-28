@@ -7,10 +7,10 @@ CREATE OR REPLACE VIEW student_stats AS
 			(SELECT COUNT(*) FROM class) - COUNT(DISTINCT enrollment."class_id") AS unregister_class_count
 	FROM student
 	LEFT JOIN enrollment ON student."id" = enrollment."student_id"
-	GROUP BY student."id";
+	GROUP BY student."id", student."full_name";
 
 -- 6/ create function (file.sql) search_student
-CREATE INDEX idx_student_id ON student(id);
+CREATE INDEX idx_student_id ON student(id); -- Create index to optimize performance
 CREATE TABLE student_search_result(student_id uuid, student_name text);
 CREATE OR REPLACE FUNCTION search_student(search_text text)
   RETURNS SETOF student_search_result AS $$

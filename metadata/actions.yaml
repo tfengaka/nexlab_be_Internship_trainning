@@ -2,22 +2,22 @@ actions:
   - name: sign_in
     definition:
       kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}/sign-in'
+      handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
-      - role: user
       - role: anonymous
   - name: sign_up
     definition:
       kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}/sign-up'
+      handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
-      - role: user
       - role: anonymous
 custom_types:
   enums: []
-  input_objects: []
+  input_objects:
+    - name: FormSignInInput
+    - name: FormSignUpInput
   objects:
-    - name: AuthResponse
+    - name: AuthOutput
   scalars: []

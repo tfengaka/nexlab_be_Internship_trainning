@@ -4,4 +4,46 @@
     timeout_seconds: 60
     customization: {}
     forward_client_headers: true
-  comment: ''
+  comment: ""
+  permissions:
+    - role: user
+      definition:
+        schema: |
+          schema {
+            query: Query
+            mutation: Mutation
+          }
+          type Class {
+            class_name: String!
+            createdAt: String
+            id: ID!
+            status: String!
+            updatedAt: String
+          }
+          type MessagesOutput {
+            messages: String!
+          }
+          type Mutation {
+            changePassword(form: FormEditPasswordInput!): MessagesOutput!
+            enrollClass(classId: ID!): MessagesOutput!
+          }
+          type Query {
+            getMe: StudentWithClass!
+          }
+          type StudentWithClass {
+            classes: [Class]!
+            createdAt: String
+            email: String!
+            full_name: String!
+            id: ID!
+            status: String!
+            updatedAt: String
+          }
+          input FormEditPasswordInput {
+            newPassword: String!
+            oldPassword: String!
+          }
+          input FormUpdateStudent {
+            email: String!
+            full_name: String!
+          }
