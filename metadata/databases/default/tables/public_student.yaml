@@ -9,3 +9,29 @@ array_relationships:
         table:
           name: enrollment
           schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - email
+        - full_name
+        - id
+        - password
+        - status
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - email
+        - full_name
+        - password
+        - status
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+    comment: ""

@@ -1,0 +1,19 @@
+type Mutation {
+  sign_in(
+    email: String!
+    password: String!
+  ): AuthResponse
+}
+
+type Mutation {
+  sign_up(
+    email: String!
+    password: String!
+    fullName: String!
+  ): AuthResponse!
+}
+
+type AuthResponse {
+  access_token: String!
+}
+

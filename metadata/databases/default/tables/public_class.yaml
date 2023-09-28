@@ -9,3 +9,22 @@ array_relationships:
         table:
           name: enrollment
           schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - class_name
+        - id
+        - status
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - class_name
+        - status
+        - createdAt
+        - updatedAt
+        - id
+      filter: {}
+    comment: ""
