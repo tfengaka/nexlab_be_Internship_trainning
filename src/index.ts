@@ -9,8 +9,6 @@ import { router as middlewareRouter } from '~/apis/middleware';
 import { connectDatabase } from '~/model';
 
 function initialServer() {
-  const app = express();
-
   // Initialize the graphql-yoga router
   const yoga = createYoga({
     schema,
@@ -23,6 +21,7 @@ function initialServer() {
   const yogaRouter = Router();
   yogaRouter.use(yoga);
 
+  const app = express();
   app.use(express.json());
   app.use(cors());
   app.use(yoga.graphqlEndpoint, yogaRouter);

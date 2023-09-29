@@ -1,4 +1,10 @@
 type Mutation {
+  refresh_token(
+    form: FormRefreshTokenInput!
+  ): AuthOutput!
+}
+
+type Mutation {
   sign_in(
     form: FormSignInInput!
   ): AuthOutput!
@@ -21,7 +27,12 @@ input FormSignUpInput {
   password: String!
 }
 
+input FormRefreshTokenInput {
+  refresh_token: String!
+}
+
 type AuthOutput {
   access_token: String!
+  refresh_token: String!
 }
 

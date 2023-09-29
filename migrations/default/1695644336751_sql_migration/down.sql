@@ -20,4 +20,4 @@
 --     FROM student
 --     WHERE student."full_name" ILIKE '%' || search_text || '%';
 -- END;
--- $$ LANGUAGE plpgsql;
+-- $$ LANGUAGE plpgsql stable;
