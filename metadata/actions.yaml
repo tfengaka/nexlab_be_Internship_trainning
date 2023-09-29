@@ -1,10 +1,18 @@
 actions:
+  - name: refresh_token
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_BASE_ENDPOINT}}'
+      forward_client_headers: true
+    permissions:
+      - role: user
   - name: sign_in
     definition:
       kind: synchronous
       handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
+      - role: user
       - role: anonymous
   - name: sign_up
     definition:
@@ -12,12 +20,14 @@ actions:
       handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
+      - role: user
       - role: anonymous
 custom_types:
   enums: []
   input_objects:
     - name: FormSignInInput
     - name: FormSignUpInput
+    - name: FormRefreshTokenInput
   objects:
     - name: AuthOutput
   scalars: []

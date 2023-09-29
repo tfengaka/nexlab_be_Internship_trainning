@@ -1,3 +1,6 @@
+#!make
+include .env
+
 PROJECT=nexlab_be_intern
 
 dev: 
@@ -11,6 +14,21 @@ restart:
 
 clean: 
 	docker-compose -p $(PROJECT) down --remove-orphans -v
+
+console:
+	hasura console --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
+
+migrate:
+	hasura migrate apply --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
+
+metadata-apply:
+	hasura metadata apply --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
+
+metadata-reload:
+	hasura metadata reload --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
+
+seed:
+	hasura seed apply
 
 %:
 	@echo "Done"

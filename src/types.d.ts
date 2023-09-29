@@ -10,8 +10,13 @@ interface FormSignUpInput extends FormSignInInput {
   full_name: string;
 }
 
-interface AuthOutput {
+interface FormRefreshTokenInput {
+  refresh_token: string;
+}
+
+interface AuthToken {
   access_token: string;
+  refresh_token: string;
 }
 
 interface FormUpdateStudent {

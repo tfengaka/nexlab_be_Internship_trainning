@@ -8,7 +8,7 @@ CREATE OR REPLACE VIEW student_stats AS
 	LEFT JOIN enrollment ON student."id" = enrollment."student_id"
 	GROUP BY student."id";
 	
-CREATE INDEX idx_student_id ON student(id);
+CREATE INDEX idx_student_name ON student(full_name);
 CREATE TABLE student_search_result(student_id uuid, student_name text);
 CREATE OR REPLACE FUNCTION search_student(search_text text)
   RETURNS SETOF student_search_result AS $$
@@ -18,4 +18,4 @@ BEGIN
     FROM student
     WHERE student."full_name" ILIKE '%' || search_text || '%';
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql stable;

@@ -12,6 +12,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./scripts/docker-entrypoint-initdb.d/create_hdb.sql:/docker-entrypoint-initdb.d/create_hdb.sql
     env_file:
       - .env
 volumes:
