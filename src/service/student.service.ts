@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken';
 import env from '~/config/env';
 import models from '~/model';
 
-export const SignUp = async ({ email, password, fullName }: SignUpInput) => {
-  if (!email || !password || !fullName)
+export const SignUp = async ({ email, password, full_name }: FormSignUpInput) => {
+  if (!email || !password || !full_name)
     throw new GraphQLError('Invalid Input!', {
       extensions: {
         code: 'BAD_REQUEST',
@@ -26,7 +26,7 @@ export const SignUp = async ({ email, password, fullName }: SignUpInput) => {
   const student = await models.Student.create({
     email,
     password: hashedPassword,
-    full_name: fullName,
+    full_name,
   });
 
   const access_token = jwt.sign({ sub: student.id }, env.JWT_SECRET, {
@@ -38,7 +38,7 @@ export const SignUp = async ({ email, password, fullName }: SignUpInput) => {
   };
 };
 
-export const SignIn = async ({ email, password }: SignInInput) => {
+export const SignIn = async ({ email, password }: FormSignInInput) => {
   if (!email || !password)
     throw new GraphQLError('Invalid Input!', {
       extensions: {
@@ -136,7 +136,7 @@ export const removeStudentByPk = async (id: string) => {
   };
 };
 
-export const updateStudentDataByPk = async (id: string, data: UpdateStudentInput) => {
+export const updateStudentDataByPk = async (id: string, data: FormUpdateStudent) => {
   const student = await models.Student.findByPk(id);
   if (!student)
     throw new GraphQLError('Student not found!', {
@@ -145,7 +145,7 @@ export const updateStudentDataByPk = async (id: string, data: UpdateStudentInput
       },
     });
 
-  student.full_name = data.fullName;
+  student.full_name = data.full_name;
   student.email = data.email;
 
   student.save();
@@ -153,7 +153,7 @@ export const updateStudentDataByPk = async (id: string, data: UpdateStudentInput
   return student;
 };
 
-export const changePassword = async (token: string, form: ChangePasswordInput) => {
+export const changePassword = async (token: string, form: FormEditPasswordInput) => {
   const student = await getCurrentStudent(token, false);
   const oldPasswordMatch = await bcrypt.compare(form.oldPassword, student.password);
   if (!oldPasswordMatch)

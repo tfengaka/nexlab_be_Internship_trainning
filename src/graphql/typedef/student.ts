@@ -6,23 +6,23 @@ createdAt: String
 updatedAt: String`;
 
 const studentTypeDefs = /* GraphQL */ `
-  input SignInInput {
+  input FormSignInInput {
     email: String!
     password: String!
   }
 
-  input SignUpInput {
-    fullName: String!
+  input FormSignUpInput {
+    full_name: String!
     email: String!
     password: String!
   }
 
-  input UpdateStudentInput {
+  input FormUpdateStudent {
     email: String!
-    fullName: String!
+    full_name: String!
   }
 
-  input ChangePasswordForm {
+  input FormEditPasswordInput {
     oldPassword: String!
     newPassword: String!
   }
@@ -30,7 +30,7 @@ const studentTypeDefs = /* GraphQL */ `
   type Student {
     ${studentType}
   }
-  type StudentWithClasses {
+  type StudentWithClass {
     ${studentType}
     classes: [Class]!
   }
@@ -39,16 +39,14 @@ const studentTypeDefs = /* GraphQL */ `
   }
 
   type Query {
-    getMe: StudentWithClasses!
+    getMe: StudentWithClass!
     getStudents: [Student]!
   }
 
   type Mutation {
-    signIn(form: SignInInput!): AuthOutput!
-    signUp(form: SignUpInput!): AuthOutput!
-    updateStudentByPk(pk: ID!, data: UpdateStudentInput!): Student!
+    updateStudentByPk(pk: ID!, form: FormUpdateStudent!): Student!
     deleteStudentByPk(pk: ID!): MessagesOutput!
-    changePassword(form: ChangePasswordForm!): MessagesOutput!
+    changePassword(form: FormEditPasswordInput!): MessagesOutput!
     enrollClass(classId: ID!): MessagesOutput!
   }
 `;

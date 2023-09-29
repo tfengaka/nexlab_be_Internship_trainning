@@ -1,34 +1,34 @@
 type Status = 'pending' | 'active' | 'completed';
 type NodeEnv = 'development' | 'production' | 'staging';
 
-interface SignInInput {
+interface FormSignInInput {
   email: string;
   password: string;
 }
 
-interface SignUpInput extends SignInInput {
-  fullName: string;
+interface FormSignUpInput extends FormSignInInput {
+  full_name: string;
 }
 
 interface AuthOutput {
   access_token: string;
 }
 
-interface UpdateStudentInput {
+interface FormUpdateStudent {
+  full_name: string;
   email: string;
-  fullName: string;
 }
 
-interface ChangePasswordInput {
+interface FormEditPasswordInput {
   oldPassword: string;
   newPassword: string;
 }
 
-interface ActionPayload<T> {
+interface IHasuraAction<Type = Record<string, any>> {
   action: {
     name: string;
   };
-  input: T;
+  input: Type;
   request_query: string;
   session_variables: Record<string, string>;
 }

@@ -1,19 +1,17 @@
 import cors from 'cors';
 import express, { Router } from 'express';
 import { createYoga } from 'graphql-yoga';
-import env from '~/config/env';
-import schema from '~/schema';
-import { connectDatabase } from './model';
 
-import { actionRouter } from './apis/actions/router';
-import { authRouter } from './apis/auth/router';
+import env from '~/config/env';
+import { schema } from '~/graphql';
+import { router as actionRouter } from '~/apis/actions';
+import { router as middlewareRouter } from '~/apis/middleware';
+import { connectDatabase } from '~/model';
 
 function initialServer() {
   const app = express();
 
-  app.use(express.json());
-  app.use(cors());
-
+  // Initialize the graphql-yoga router
   const yoga = createYoga({
     schema,
     cors: {
@@ -24,13 +22,16 @@ function initialServer() {
   });
   const yogaRouter = Router();
   yogaRouter.use(yoga);
-  app.use(yoga.graphqlEndpoint, yogaRouter);
 
-  app.use('/verify', authRouter);
+  app.use(express.json());
+  app.use(cors());
+  app.use(yoga.graphqlEndpoint, yogaRouter);
+  app.use('/verify', middlewareRouter);
   app.use('/actions', actionRouter);
 
   app.listen(env.PORT, () => {
-    console.log(`🚀  App listening on port ${env.PORT}\n`);
+    console.log(`🚀  App listening on port ${env.PORT}`);
+    console.log(`🚀  Yoga Playground are running at http://127.0.0.1:${env.PORT}/graphql\n`);
   });
 }
 
