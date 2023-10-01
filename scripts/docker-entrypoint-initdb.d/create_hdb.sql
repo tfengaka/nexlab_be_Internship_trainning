@@ -1,1 +1,1 @@
-CREATE DATABASE hasura;
+CREATE DATABASE hdb_metadata;
