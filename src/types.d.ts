@@ -19,6 +19,11 @@ interface AuthToken {
   refresh_token: string;
 }
 
+interface FormOTPVerifyInput {
+  email: string;
+  otp: string;
+}
+
 interface FormUpdateStudent {
   full_name: string;
   email: string;
@@ -27,13 +32,4 @@ interface FormUpdateStudent {
 interface FormEditPasswordInput {
   oldPassword: string;
   newPassword: string;
-}
-
-interface IHasuraAction<Type = Record<string, any>> {
-  action: {
-    name: string;
-  };
-  input: Type;
-  request_query: string;
-  session_variables: Record<string, string>;
 }

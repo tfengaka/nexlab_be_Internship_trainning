@@ -1,10 +1,9 @@
-import { SignIn, SignUp } from '~/service/student.service';
-import { IHandler } from '~/apis/actions/handler';
-import { GraphQLError } from 'graphql';
-import model from '~/model';
 import bcrypt from 'bcrypt';
+import { GraphQLError } from 'graphql';
 import jwt from 'jsonwebtoken';
+import { IHandler } from '~/apis/types';
 import env from '~/config/env';
+import model from '~/model';
 
 const refresh_tokens: Record<string, AuthToken> = {};
 
@@ -12,16 +11,15 @@ const generate_token = (id: string, secret_key: string, expiresIn?: number | str
   jwt.sign({ sub: id }, secret_key, {
     expiresIn: expiresIn,
   });
-
-export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ params }) => {
-  if (!params.form) {
+export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ payload }) => {
+  if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
         code: 'BAD_REQUEST',
       },
     });
   }
-  const { email, password } = params.form;
+  const { email, password } = payload.form;
 
   const student = await model.Student.findOne({ where: { email } });
   if (!student) {
@@ -48,15 +46,15 @@ export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ 
 
   return res;
 };
-export const sign_up: IHandler<{ form: FormSignUpInput }, AuthToken> = async ({ params }) => {
-  if (!params.form) {
+export const sign_up: IHandler<{ form: FormSignUpInput }, AuthToken> = async ({ payload }) => {
+  if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
         code: 'BAD_REQUEST',
       },
     });
   }
-  const { email, password, full_name } = params.form;
+  const { email, password, full_name } = payload.form;
 
   const is_already = await model.Student.findOne({ where: { email } });
   if (is_already) {
@@ -78,16 +76,15 @@ export const sign_up: IHandler<{ form: FormSignUpInput }, AuthToken> = async ({ 
 
   return res;
 };
-
-export const refresh_token: IHandler<{ form: FormRefreshTokenInput }, AuthToken> = ({ params }) => {
-  if (!params.form) {
+export const refresh_token: IHandler<{ form: FormRefreshTokenInput }, AuthToken> = ({ payload }) => {
+  if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
         code: 'BAD_REQUEST',
       },
     });
   }
-  const { refresh_token } = params.form;
+  const { refresh_token } = payload.form;
 
   if (!refresh_token) {
     throw new GraphQLError('You are not authenticated!', {
@@ -113,4 +110,11 @@ export const refresh_token: IHandler<{ form: FormRefreshTokenInput }, AuthToken>
   const res = { access_token: new_access_token, refresh_token: new_refresh_token };
   refresh_tokens[student_id] = res;
   return res;
+};
+export const otp_verify = () => {
+  throw new GraphQLError('Not Implemented', {
+    extensions: {
+      code: 'NOT_IMPLEMENTED',
+    },
+  });
 };

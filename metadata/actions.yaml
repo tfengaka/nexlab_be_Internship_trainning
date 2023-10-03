@@ -12,7 +12,6 @@ actions:
       handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
-      - role: user
       - role: anonymous
   - name: sign_up
     definition:
@@ -20,7 +19,6 @@ actions:
       handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
-      - role: user
       - role: anonymous
 custom_types:
   enums: []

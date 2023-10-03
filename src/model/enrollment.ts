@@ -3,16 +3,17 @@ import { Column, DataType, ForeignKey, Model, PrimaryKey, Table } from 'sequeliz
 import Class from './class';
 import Student from './student';
 
-interface IEnrollmentAttributes {
+export interface IEnrollmentAttributes {
   student_id: string;
   class_id: string;
+  expired_at: string;
   status: Status;
 }
-interface IEnrollmentCreationAttributes extends Optional<IEnrollmentAttributes, 'status'> {}
+interface IEnrollmentCreationAttributes extends Optional<IEnrollmentAttributes, 'status' | 'expired_at'> {}
 
 @Table({
   tableName: 'enrollment',
-  timestamps: true,
+  timestamps: false,
 })
 class Enrollment extends Model<IEnrollmentAttributes, IEnrollmentCreationAttributes> {
   @ForeignKey(() => Class)
@@ -29,6 +30,11 @@ class Enrollment extends Model<IEnrollmentAttributes, IEnrollmentCreationAttribu
     allowNull: false,
   })
   status!: string;
+
+  @Column({
+    type: DataType.DATE,
+  })
+  expired_at!: string;
 }
 
 export default Enrollment;

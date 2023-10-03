@@ -3,7 +3,7 @@ import { BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescr
 import Student from './student';
 import Enrollment from './enrollment';
 
-interface IClassAttributes {
+export interface IClassAttributes {
   id: string;
   class_name: string;
   status: Status;
@@ -12,7 +12,7 @@ interface IClassCreationAttributes extends Optional<IClassAttributes, 'id' | 'st
 
 @Table({
   tableName: 'class',
-  timestamps: true,
+  timestamps: false,
 })
 class Class extends Model<IClassAttributes, IClassCreationAttributes> {
   @Column({

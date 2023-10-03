@@ -14,17 +14,19 @@ select_permissions:
     permission:
       columns:
         - class_name
+        - created_at
         - id
         - status
+        - updated_at
       filter: {}
-    comment: ""
+    comment: ''
   - role: user
     permission:
       columns:
         - class_name
         - status
-        - createdAt
-        - updatedAt
+        - created_at
+        - updated_at
         - id
       filter: {}
-    comment: ""
+    comment: ''

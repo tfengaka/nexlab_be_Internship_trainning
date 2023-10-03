@@ -2,8 +2,8 @@ const studentType = `id: ID!
 full_name: String!
 email: String!
 status: String!
-createdAt: String
-updatedAt: String`;
+created_at: String
+updated_at: String`;
 
 const studentTypeDefs = /* GraphQL */ `
   input FormSignInInput {

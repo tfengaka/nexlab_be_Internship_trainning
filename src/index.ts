@@ -5,6 +5,7 @@ import { createYoga } from 'graphql-yoga';
 import env from '~/config/env';
 import { schema } from '~/graphql';
 import { router as actionRouter } from '~/apis/actions';
+import { router as eventRouter } from '~/apis/events';
 import { router as middlewareRouter } from '~/apis/middleware';
 import { connectDatabase } from '~/model';
 
@@ -27,6 +28,8 @@ function initialServer() {
   app.use(yoga.graphqlEndpoint, yogaRouter);
   app.use('/verify', middlewareRouter);
   app.use('/actions', actionRouter);
+  app.use('/events', eventRouter);
+  app.use('/cronjobs', eventRouter);
 
   app.listen(env.PORT, () => {
     console.log(`🚀  App listening on port ${env.PORT}`);

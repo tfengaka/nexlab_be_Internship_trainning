@@ -1,7 +1,7 @@
 #!make
 include .env
 
-PROJECT=nexlab_be_intern
+PROJECT=student_api
 
 dev: 
 	docker-compose -f docker-compose.yaml -f docker-compose.database.yaml  -p $(PROJECT) up -d ${SERVICE}
