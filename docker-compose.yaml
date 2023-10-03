@@ -1,7 +1,8 @@
-version: "3.3"
+version: '3.3'
 services:
   express-app:
     container_name: express
+    tty: true
     build: .
     ports:
       - ${PORT}:${PORT}
@@ -14,19 +15,21 @@ services:
   hasura-engine:
     image: hasura/graphql-engine:v2.33.0
     container_name: hasura-console
+    tty: true
     ports:
       - 8080:8080
     restart: always
     environment:
       HASURA_GRAPHQL_METADATA_DATABASE_URL: ${HASURA_METADATA_DATABASE_URL}
       HASURA_GRAPHQL_DATABASE_URL: ${PG_DATABASE_URL}
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
+      HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: 'true'
       REMOTE_SCHEMA_ENDPOINT: http://express:${PORT}/graphql
-      HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
       HASURA_GRAPHQL_AUTH_HOOK: http://express:${PORT}/verify
       ACTION_BASE_ENDPOINT: http://express:${PORT}/actions
+      EVENT_BASE_ENDPOINT: http://express:${PORT}/events
     depends_on:
       - express-app

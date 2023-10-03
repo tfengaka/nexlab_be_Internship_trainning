@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import env from '~/config/env';
 import models from '~/model';
 
-
 export const getCurrentStudent = async (token: string, hasClasses: boolean = true) => {
   if (!token)
     throw new GraphQLError('Invalid Token!', {

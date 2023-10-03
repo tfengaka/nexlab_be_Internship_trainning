@@ -1,8 +1,8 @@
 const classType = `id: ID!
 class_name: String!
 status: String!
-createdAt: String
-updatedAt: String`;
+created_at: String
+updated_at: String`;
 
 const classTypeDefs = /* GraphQL */ `
   type Class {

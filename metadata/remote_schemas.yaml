@@ -1,4 +1,4 @@
-- name: express-graphql
+- name: yoga-app
   definition:
     url: '{{REMOTE_SCHEMA_ENDPOINT}}'
     timeout_seconds: 60
@@ -15,10 +15,18 @@
           }
           type Class {
             class_name: String!
-            createdAt: String
+            created_at: String
             id: ID!
             status: String!
-            updatedAt: String
+            updated_at: String
+          }
+          type ClassWithStudent {
+            class_name: String!
+            created_at: String
+            id: ID!
+            status: String!
+            students: [Student]
+            updated_at: String
           }
           type MessagesOutput {
             messages: String!
@@ -26,18 +34,29 @@
           type Mutation {
             changePassword(form: FormEditPasswordInput!): MessagesOutput!
             enrollClass(classId: ID!): MessagesOutput!
+            updateStudentByPk(pk: ID!, form: FormUpdateStudent!): Student!
           }
           type Query {
+            getAllClasses: [Class]
+            getClassByPk(pk: ID): ClassWithStudent!
             getMe: StudentWithClass!
           }
-          type StudentWithClass {
-            classes: [Class]!
-            createdAt: String
+          type Student {
+            created_at: String
             email: String!
             full_name: String!
             id: ID!
             status: String!
-            updatedAt: String
+            updated_at: String
+          }
+          type StudentWithClass {
+            classes: [Class]!
+            created_at: String
+            email: String!
+            full_name: String!
+            id: ID!
+            status: String!
+            updated_at: String
           }
           input FormEditPasswordInput {
             newPassword: String!

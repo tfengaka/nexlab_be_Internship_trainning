@@ -15,9 +15,12 @@ select_permissions:
       columns:
         - email
         - full_name
-        - id
         - password
         - status
+        - created_at
+        - updated_at
+        - verified_at
+        - id
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -28,6 +31,7 @@ update_permissions:
       columns:
         - email
         - full_name
+        - id
         - password
         - status
       filter:
@@ -35,3 +39,14 @@ update_permissions:
           _eq: X-Hasura-User-Id
       check: null
     comment: ""
+event_triggers:
+  - name: send_otp
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook: '{{EVENT_BASE_ENDPOINT}}'

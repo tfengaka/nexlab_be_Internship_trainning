@@ -3,7 +3,7 @@ import { Column, DataType, ForeignKey, Model, PrimaryKey, Table } from 'sequeliz
 import Class from './class';
 import Student from './student';
 
-interface IEnrollmentAttributes {
+export interface IEnrollmentAttributes {
   student_id: string;
   class_id: string;
   status: Status;
@@ -12,7 +12,7 @@ interface IEnrollmentCreationAttributes extends Optional<IEnrollmentAttributes, 
 
 @Table({
   tableName: 'enrollment',
-  timestamps: true,
+  timestamps: false,
 })
 class Enrollment extends Model<IEnrollmentAttributes, IEnrollmentCreationAttributes> {
   @ForeignKey(() => Class)
