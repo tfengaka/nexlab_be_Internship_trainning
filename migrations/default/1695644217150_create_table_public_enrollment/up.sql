@@ -2,6 +2,7 @@ CREATE TABLE "public"."enrollment" (
   "student_id" uuid NOT NULL,
   "class_id" uuid NOT NULL,
   "status" text NOT NULL DEFAULT '"active"',
+  "expired_at" timestamptz,
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz NOT NULL DEFAULT now(),
   PRIMARY KEY ("student_id", "class_id"),

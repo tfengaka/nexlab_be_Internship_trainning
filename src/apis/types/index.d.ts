@@ -1,5 +1,12 @@
 import { Request, Response } from 'express';
 
+export enum OperandType {
+  Insert = 'INSERT',
+  Update = 'UPDATE',
+  Delete = 'DELETE',
+  Manual = 'MANUAL',
+}
+
 export interface IHasuraAction<Type = Record<string, any>> {
   action: {
     name: string;
@@ -9,18 +16,15 @@ export interface IHasuraAction<Type = Record<string, any>> {
   session_variables: Record<string, string>;
 }
 
-export interface IHasuraEvent<New = Record<string, any> | null, Old = Record<string, any> | null> {
+export interface IHasuraEvent<Data = Record<string, any>> {
   created_at: string;
   delivery_info: {
     current_retry: number;
     max_retries: number;
   };
   event: {
-    data: {
-      new: New;
-      old: Old;
-    };
-    op: 'INSERT' | 'UPDATE' | 'DELETE' | 'MANUAL';
+    data: Data;
+    op: OperandType;
     session_variables: Record<string, string>;
     trace_context: {
       span_id: string;
@@ -37,10 +41,19 @@ export interface IHasuraEvent<New = Record<string, any> | null, Old = Record<str
   };
 }
 
+export interface IHasuraCronjob<Payload = Record<string, any>> {
+  id: string;
+  name: string;
+  payload: Payload;
+  schedule_time: string;
+  comment: string;
+}
+
 export interface IContextHandler<Payload> {
   req: Request;
   res: Response;
-  data: Payload;
+  op?: OperandType;
+  payload: Payload;
   session_variables?: Record<string, string>;
 }
 export type IHandler<Req = Record<string, unknown>, Res = Record<string, any>> = (

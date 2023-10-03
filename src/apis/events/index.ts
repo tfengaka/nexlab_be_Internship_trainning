@@ -10,7 +10,7 @@ router.post(
   wrapperHandler<IHasuraEvent>([send_otp] as IHandler[], (body) => ({
     name: body.trigger.name,
     op: body.event.op,
-    data: body.event.data,
+    payload: body.event.data,
     session_variables: body.event.session_variables,
   }))
 );

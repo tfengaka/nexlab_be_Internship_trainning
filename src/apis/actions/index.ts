@@ -11,7 +11,7 @@ router.post(
   '',
   wrapperHandler<IHasuraAction>(handlers as IHandler[], (body) => ({
     name: body.action.name,
-    data: body.input,
+    payload: body.input,
     session_variables: body.session_variables,
   }))
 );

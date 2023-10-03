@@ -6,9 +6,10 @@ import Student from './student';
 export interface IEnrollmentAttributes {
   student_id: string;
   class_id: string;
+  expired_at: string;
   status: Status;
 }
-interface IEnrollmentCreationAttributes extends Optional<IEnrollmentAttributes, 'status'> {}
+interface IEnrollmentCreationAttributes extends Optional<IEnrollmentAttributes, 'status' | 'expired_at'> {}
 
 @Table({
   tableName: 'enrollment',
@@ -29,6 +30,11 @@ class Enrollment extends Model<IEnrollmentAttributes, IEnrollmentCreationAttribu
     allowNull: false,
   })
   status!: string;
+
+  @Column({
+    type: DataType.DATE,
+  })
+  expired_at!: string;
 }
 
 export default Enrollment;

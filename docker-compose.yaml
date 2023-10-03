@@ -9,7 +9,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - .:/usr/src/app/nexlab_be_intern
+      - .:/usr/src/app/nexlab_be
     env_file:
       - .env
   hasura-engine:
@@ -26,10 +26,11 @@ services:
       HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: 'true'
-      REMOTE_SCHEMA_ENDPOINT: http://express:${PORT}/graphql
       HASURA_GRAPHQL_AUTH_HOOK: http://express:${PORT}/verify
+      REMOTE_SCHEMA_ENDPOINT: http://express:${PORT}/graphql
+      HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: 'true'
       ACTION_BASE_ENDPOINT: http://express:${PORT}/actions
       EVENT_BASE_ENDPOINT: http://express:${PORT}/events
+      CRONJOB_BASE_ENDPOINT: http://express:${PORT}/cronjobs
     depends_on:
       - express-app

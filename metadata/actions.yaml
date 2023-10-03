@@ -12,14 +12,14 @@ actions:
       handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
-      - role: synchronous
+      - role: anonymous
   - name: sign_up
     definition:
       kind: synchronous
       handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
-      - role: synchronous
+      - role: anonymous
 custom_types:
   enums: []
   input_objects:

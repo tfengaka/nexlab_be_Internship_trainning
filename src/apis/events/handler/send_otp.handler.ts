@@ -2,9 +2,9 @@ import { IHandler } from '~/apis/types';
 import { IStudentAttributes } from '~/model/student';
 import { sendMail } from '~/utils';
 
-export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ res, data }) => {
+export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ res, payload }) => {
   try {
-    const { email, full_name } = data.new;
+    const { email, full_name } = payload.new;
     const mailBody = {
       to: email,
       subject: 'Verify your email',

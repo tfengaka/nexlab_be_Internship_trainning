@@ -11,16 +11,15 @@ const generate_token = (id: string, secret_key: string, expiresIn?: number | str
   jwt.sign({ sub: id }, secret_key, {
     expiresIn: expiresIn,
   });
-
-export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ data }) => {
-  if (!data.form) {
+export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ payload }) => {
+  if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
         code: 'BAD_REQUEST',
       },
     });
   }
-  const { email, password } = data.form;
+  const { email, password } = payload.form;
 
   const student = await model.Student.findOne({ where: { email } });
   if (!student) {
@@ -47,15 +46,15 @@ export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ 
 
   return res;
 };
-export const sign_up: IHandler<{ form: FormSignUpInput }, AuthToken> = async ({ data }) => {
-  if (!data.form) {
+export const sign_up: IHandler<{ form: FormSignUpInput }, AuthToken> = async ({ payload }) => {
+  if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
         code: 'BAD_REQUEST',
       },
     });
   }
-  const { email, password, full_name } = data.form;
+  const { email, password, full_name } = payload.form;
 
   const is_already = await model.Student.findOne({ where: { email } });
   if (is_already) {
@@ -77,15 +76,15 @@ export const sign_up: IHandler<{ form: FormSignUpInput }, AuthToken> = async ({ 
 
   return res;
 };
-export const refresh_token: IHandler<{ form: FormRefreshTokenInput }, AuthToken> = ({ data }) => {
-  if (!data.form) {
+export const refresh_token: IHandler<{ form: FormRefreshTokenInput }, AuthToken> = ({ payload }) => {
+  if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
         code: 'BAD_REQUEST',
       },
     });
   }
-  const { refresh_token } = data.form;
+  const { refresh_token } = payload.form;
 
   if (!refresh_token) {
     throw new GraphQLError('You are not authenticated!', {

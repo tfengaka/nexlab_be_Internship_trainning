@@ -29,6 +29,7 @@ function initialServer() {
   app.use('/verify', middlewareRouter);
   app.use('/actions', actionRouter);
   app.use('/events', eventRouter);
+  app.use('/cronjobs', eventRouter);
 
   app.listen(env.PORT, () => {
     console.log(`🚀  App listening on port ${env.PORT}`);

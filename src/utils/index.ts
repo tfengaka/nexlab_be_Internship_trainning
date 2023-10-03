@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { GraphQLError } from 'graphql';
 import nodeMailer from 'nodemailer';
 import { Options, SentMessageInfo } from 'nodemailer/lib/smtp-transport';
-import { IHandler, IHasuraAction } from '~/apis/types';
+import { IHandler, OperandType } from '~/apis/types';
 import env from '~/config/env';
 
 interface MailRequestOptions {
@@ -39,18 +39,18 @@ export const sendMail = async (
   );
 };
 
-export function wrapperHandler<Tbody = Record<string, any>>(
+export function wrapperHandler<Body = Record<string, any>>(
   handler: IHandler[],
-  req_data: (body: Tbody) => {
+  req_data: (body: Body) => {
     name: string;
-    op?: string;
-    data: Record<string, any>;
-    session_variables: Record<string, string>;
+    op?: OperandType;
+    payload: Record<string, any>;
+    session_variables?: Record<string, string>;
   }
 ) {
   return async (req: Request, res: Response) => {
     try {
-      const { name, data, session_variables } = req_data(req.body);
+      const { name, payload, op, session_variables } = req_data(req.body);
       console.log('session_variables', session_variables);
       const targetHandler = handler.find((e) => e.name === name);
 
@@ -63,7 +63,7 @@ export function wrapperHandler<Tbody = Record<string, any>>(
         return res.status(404).json(event_error);
       }
 
-      const res_data = await targetHandler({ req, res, data, session_variables });
+      const res_data = await targetHandler({ req, res, op, payload, session_variables });
 
       return res.json(res_data);
     } catch (error) {
