@@ -3,7 +3,7 @@ include .env
 
 PROJECT=student_api
 
-dev: 
+start: 
 	docker-compose -f docker-compose.yaml -f docker-compose.database.yaml  -p $(PROJECT) up -d ${SERVICE}
 
 down: 

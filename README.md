@@ -6,23 +6,33 @@
 - `Hasura Engine V2.33.0`
 - `Docker v24.0.6` & `Docker Compose v2.22.0`
 
-## Install
+##
+
+## Running
+
+- Create `.env` file same `.env.example` to set environment variables.
+- Follow the scripts:
 
 ```shell
 $ git clone https://github.com/tfengaka/nexlab_be.git
 $ cd nexlab_be
-$ make dev
+$ make start
 ```
 
-## Usage
+### Database design and migration
 
-- Create `.env` file same `.env.example` to set environment variables.
-- Run this scripts to apply new version app:
+- Design:
+
+```shell
+  make console
+```
+
+- Migrate:
 
 ```shell
   make migrate
   make metadata-apply
-  make seed # insert example data
+  make seed # Insert example data (Optional)
 ```
 
-Now, You can visit `http://localhost:8080` to check API Explorer
+#
