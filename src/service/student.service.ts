@@ -30,6 +30,9 @@ export const getCurrentStudent = async (token: string, hasClasses: boolean = tru
     ? await models.Student.findByPk(studentId, {
         include: {
           model: models.Class,
+          attributes: {
+            include: ['id', 'class_name'],
+          },
         },
       })
     : await models.Student.findByPk(studentId);

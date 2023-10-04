@@ -46,8 +46,8 @@ const studentTypeDefs = /* GraphQL */ `
   type Mutation {
     updateStudentByPk(pk: ID!, form: FormUpdateStudent!): Student!
     deleteStudentByPk(pk: ID!): MessagesOutput!
-    changePassword(form: FormEditPasswordInput!): MessagesOutput!
-    enrollClass(classId: ID!): MessagesOutput!
+    change_password(form: FormEditPasswordInput!): MessagesOutput!
+    enroll_class(classId: ID!): MessagesOutput!
   }
 `;
 
