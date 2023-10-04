@@ -9,6 +9,13 @@ array_relationships:
         table:
           name: enrollment
           schema: public
+  - name: otp_codes
+    using:
+      foreign_key_constraint_on:
+        column: student_email
+        table:
+          name: otp_code
+          schema: public
 select_permissions:
   - role: user
     permission:

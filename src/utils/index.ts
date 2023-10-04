@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { GraphQLError } from 'graphql';
 import nodeMailer from 'nodemailer';
-import { Options, SentMessageInfo } from 'nodemailer/lib/smtp-transport';
+import { Options } from 'nodemailer/lib/smtp-transport';
 import { IHandler, OperandType } from '~/apis/types';
 import env from '~/config/env';
 
@@ -11,33 +11,29 @@ interface MailRequestOptions {
   html?: string;
 }
 
-const transport = nodeMailer.createTransport({
-  service: 'Gmail',
-  secure: true,
-  auth: {
-    user: env.MAIL_USERNAME,
-    pass: env.MAIL_PASSWORD,
-  },
-} as Options);
-
-export const sendMail = async (
-  { to, subject, html }: MailRequestOptions,
-  callback: (error: Error | null, info: SentMessageInfo) => void
-) => {
-  await transport.verify();
-  transport.sendMail(
-    {
-      from: {
-        name: env.MAIL_FROM_NAME,
-        address: env.MAIL_FROM_ADDRESS,
-      },
-      to: to,
-      subject: subject,
-      html: html,
+export const sendMail = async ({ to, subject, html }: MailRequestOptions) => {
+  const transport = nodeMailer.createTransport({
+    host: env.MAIL_HOST,
+    secure: true,
+    auth: {
+      user: env.MAIL_USERNAME,
+      pass: env.MAIL_PASSWORD,
     },
-    callback
-  );
+  } as Options);
+
+  await transport.verify();
+  const info = await transport.sendMail({
+    from: {
+      name: env.MAIL_FROM_NAME,
+      address: env.MAIL_FROM_ADDRESS,
+    },
+    to: to,
+    subject: subject,
+    html: html,
+  });
+  return info;
 };
+
 export function wrapperHandler<Body = Record<string, any>>(
   handler: IHandler[],
   req_data: (body: Body) => {
@@ -67,7 +63,108 @@ export function wrapperHandler<Body = Record<string, any>>(
 
       return res.json(res_data);
     } catch (error) {
+      console.error(error);
       return res.status(400).json(error);
     }
   };
 }
+
+export const otp_email_template = (name: string, otp: string) => `
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+
+<body style="
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #ffffff;
+      font-size: 14px;
+    ">
+  <div style="
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 45px 30px 60px;
+        background: #f4f7ff;
+        font-size: 14px;
+        color: #434343;
+      ">
+    <main>
+      <div style="
+            margin: 0;
+            margin-top: 70px;
+            padding: 90px;
+            background: #ffffff;
+            border-radius: 30px;
+            text-align: center;
+          ">
+        <div style="width: 100%; max-width: 489px; margin: 0 auto;">
+          <h1 style="
+                margin: 0;
+                font-size: 24px;
+                font-weight: 500;
+                color: #1f1f1f;
+              ">
+            Verification Email
+          </h1>
+          <p style="
+                margin: 0;
+                margin-top: 17px;
+                font-size: 16px;
+                font-weight: 500;
+                text-align: center;
+              ">
+            Hi<br/><b>${name}</b>
+          </p>
+          <p style="
+                margin: 0;
+                margin-top: 17px;
+                font-weight: 500;
+                letter-spacing: 0.56px;
+              ">
+            Thank you for choosing Hasura App. Use the following OTP
+            to complete the procedure to verify your account. OTP is
+            valid for
+            <span style="font-weight: 600; color: #1f1f1f;">5 minutes</span>.
+            Do not share this code with others.
+          </p>
+          <p style="
+                width: 100%;
+                margin: 0;
+                margin-top: 40px;
+                font-size: 40px;
+                font-weight: 700;
+                letter-spacing: 25px;
+                text-align: center;
+                color: #ba3d4f;
+              ">
+            ${otp}
+          </p>
+        </div>
+      </div>
+
+      <p style="
+            max-width: 400px;
+            margin: 0 auto;
+            margin-top: 90px;
+            text-align: center;
+            font-weight: 500;
+            color: #8c8c8c;
+          ">
+        Need help? Ask at
+        <a href="mailto:nthoa2.dev@gmail.com" style="color: #499fb6; text-decoration: none;">nthoa2.dev</a>
+        or visit our
+        <a href="" target="_blank" style="color: #499fb6; text-decoration: none;">Help Center</a>
+      </p>
+    </main>
+  </div>
+</body>
+
+</html>
+`;

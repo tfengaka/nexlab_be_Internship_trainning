@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { GraphQLError } from 'graphql';
 import jwt from 'jsonwebtoken';
 import { IHandler } from '~/apis/types';
@@ -11,6 +11,7 @@ const generate_token = (id: string, secret_key: string, expiresIn?: number | str
   jwt.sign({ sub: id }, secret_key, {
     expiresIn: expiresIn,
   });
+
 export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ payload }) => {
   if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
@@ -46,36 +47,7 @@ export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ 
 
   return res;
 };
-export const sign_up: IHandler<{ form: FormSignUpInput }, AuthToken> = async ({ payload }) => {
-  if (!payload.form) {
-    throw new GraphQLError('Invalid Input', {
-      extensions: {
-        code: 'BAD_REQUEST',
-      },
-    });
-  }
-  const { email, password, full_name } = payload.form;
 
-  const is_already = await model.Student.findOne({ where: { email } });
-  if (is_already) {
-    throw new GraphQLError('Student already exits!', {
-      extensions: {
-        code: 'CONFLICT',
-      },
-    });
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  const hash_Password = await bcrypt.hash(password, salt);
-  const student = await model.Student.create({ email, password: hash_Password, full_name });
-
-  const access_token = generate_token(student.id, env.JWT_SECRET, '1h');
-  const refresh_token = generate_token(student.id, env.JWT_REFRESH_SECRET, '30d');
-  const res = { access_token, refresh_token };
-  refresh_tokens[student.id] = res;
-
-  return res;
-};
 export const refresh_token: IHandler<{ form: FormRefreshTokenInput }, AuthToken> = ({ payload }) => {
   if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
@@ -111,10 +83,67 @@ export const refresh_token: IHandler<{ form: FormRefreshTokenInput }, AuthToken>
   refresh_tokens[student_id] = res;
   return res;
 };
-export const otp_verify = () => {
-  throw new GraphQLError('Not Implemented', {
-    extensions: {
-      code: 'NOT_IMPLEMENTED',
+
+export const sign_up: IHandler<{ form: FormSignUpInput }> = async ({ payload }) => {
+  if (!payload.form) {
+    throw new GraphQLError('Invalid Input', {
+      extensions: {
+        code: 'BAD_REQUEST',
+      },
+    });
+  }
+  const { email, password, full_name } = payload.form;
+  const is_already = await model.Student.findOne({ where: { email } });
+  if (is_already) {
+    throw new GraphQLError('Student already exits!', {
+      extensions: {
+        code: 'CONFLICT',
+      },
+    });
+  }
+  const salt = bcrypt.genSaltSync(10);
+  const hash_Password = bcrypt.hashSync(password, salt);
+  const student = await model.Student.create({ email, password: hash_Password, full_name, status: 'pending' });
+
+  return { email: student.email, full_name: student.full_name };
+};
+
+export const otp_verify: IHandler<{ form: FormOTPVerifyInput }> = async ({ payload }) => {
+  if (!payload.form) {
+    throw new GraphQLError('Invalid Input', {
+      extensions: {
+        code: 'BAD_REQUEST',
+      },
+    });
+  }
+  const { email, otp } = payload.form;
+
+  const otp_record = model.OTP_Code.findOne({
+    where: {
+      student_email: email,
+      code: otp,
     },
   });
+
+  if (!otp_record) {
+    throw new GraphQLError('OTP is not valid!', {
+      extensions: {
+        code: 'FORBIDDEN',
+      },
+    });
+  }
+
+  const student = await model.Student.findOne({ where: { email } });
+  if (!student) {
+    throw new GraphQLError('Email is incorrect!', {
+      extensions: {
+        code: 'FORBIDDEN',
+      },
+    });
+  }
+  student.status = 'active';
+  student.verified_at = new Date();
+  student.save();
+
+  return { message: `Email (${email}) has been verified!` };
 };

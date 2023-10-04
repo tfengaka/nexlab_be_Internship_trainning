@@ -12,5 +12,3 @@ export const daily_enrollment_cleanup: IHandler = async () => {
   });
   return `affected_rows: ${expired_enrollment_count}`;
 };
-
-//

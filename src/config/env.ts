@@ -12,6 +12,7 @@ const env = {
   DB_USER: process.env.POSTGRES_USER,
   DB_PASSWORD: process.env.POSTGRES_PASSWORD,
 
+  MAIL_HOST: process.env.MAIL_HOST,
   MAIL_USERNAME: process.env.MAIL_USERNAME,
   MAIL_PASSWORD: process.env.MAIL_PASSWORD,
   MAIL_FROM_ADDRESS: process.env.MAIL_FROM_ADDRESS as string,

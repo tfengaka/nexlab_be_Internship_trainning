@@ -1,9 +1,9 @@
 - name: daily_enrollment_cleanup
   webhook: '{{CRONJOB_BASE_ENDPOINT}}'
-  schedule: '0 0 * * *'
+  schedule: 0 0 * * *
   include_in_metadata: true
   payload: {}
-  comment: ''
+  comment: ""
   request_transform:
     body:
       action: transform
