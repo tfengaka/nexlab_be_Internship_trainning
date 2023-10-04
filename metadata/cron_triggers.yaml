@@ -1,1 +1,19 @@
-[]
+- name: daily_enrollment_cleanup
+  webhook: '{{CRONJOB_BASE_ENDPOINT}}'
+  schedule: '0 0 * * *'
+  include_in_metadata: true
+  payload: {}
+  comment: ''
+  request_transform:
+    body:
+      action: transform
+      template: |-
+        {
+          "id": {{$body.id}},
+          "name": {{$body.name}},
+          "payload": {{$body.payload}},
+          "comment": {{$body.comment}},
+          "scheduled_time":  {{$body.scheduled_time}}
+        }
+    template_engine: Kriti
+    version: 2

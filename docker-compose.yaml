@@ -6,12 +6,11 @@ services:
     build: .
     ports:
       - ${PORT}:${PORT}
+    working_dir: /app
+    volumes:
+      - .:/app
     depends_on:
       - postgres
-    volumes:
-      - .:/usr/src/app/nexlab_be
-    env_file:
-      - .env
   hasura-engine:
     image: hasura/graphql-engine:v2.33.0
     container_name: hasura-console

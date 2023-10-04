@@ -19,7 +19,7 @@ select_permissions:
         - status
         - updated_at
       filter: {}
-    comment: ''
+    comment: ""
   - role: user
     permission:
       columns:
@@ -29,4 +29,4 @@ select_permissions:
         - updated_at
         - id
       filter: {}
-    comment: ''
+    comment: ""

@@ -1,4 +1,4 @@
-- name: yoga-app
+- name: yoga-graphql
   definition:
     url: '{{REMOTE_SCHEMA_ENDPOINT}}'
     timeout_seconds: 60
@@ -6,6 +6,22 @@
     forward_client_headers: true
   comment: ""
   permissions:
+    - role: anonymous
+      definition:
+        schema: |
+          schema {
+            query: Query
+          }
+          type Class {
+            class_name: String!
+            created_at: String
+            id: ID!
+            status: String!
+            updated_at: String
+          }
+          type Query {
+            getAllClasses: [Class]
+          }
     - role: user
       definition:
         schema: |
@@ -20,34 +36,15 @@
             status: String!
             updated_at: String
           }
-          type ClassWithStudent {
-            class_name: String!
-            created_at: String
-            id: ID!
-            status: String!
-            students: [Student]
-            updated_at: String
-          }
           type MessagesOutput {
             messages: String!
           }
           type Mutation {
-            changePassword(form: FormEditPasswordInput!): MessagesOutput!
-            enrollClass(classId: ID!): MessagesOutput!
-            updateStudentByPk(pk: ID!, form: FormUpdateStudent!): Student!
+            change_password(form: FormEditPasswordInput!): MessagesOutput!
+            enroll_class(classId: ID!): MessagesOutput!
           }
           type Query {
-            getAllClasses: [Class]
-            getClassByPk(pk: ID): ClassWithStudent!
             getMe: StudentWithClass!
-          }
-          type Student {
-            created_at: String
-            email: String!
-            full_name: String!
-            id: ID!
-            status: String!
-            updated_at: String
           }
           type StudentWithClass {
             classes: [Class]!
@@ -61,8 +58,4 @@
           input FormEditPasswordInput {
             newPassword: String!
             oldPassword: String!
-          }
-          input FormUpdateStudent {
-            email: String!
-            full_name: String!
           }

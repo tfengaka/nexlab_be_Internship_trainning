@@ -38,20 +38,20 @@ export const sendMail = async (
     callback
   );
 };
-
 export function wrapperHandler<Body = Record<string, any>>(
   handler: IHandler[],
   req_data: (body: Body) => {
+    id?: string;
     name: string;
     op?: OperandType;
     payload: Record<string, any>;
     session_variables?: Record<string, string>;
+    scheduled_time?: string;
   }
 ) {
   return async (req: Request, res: Response) => {
     try {
       const { name, payload, op, session_variables } = req_data(req.body);
-      console.log('session_variables', session_variables);
       const targetHandler = handler.find((e) => e.name === name);
 
       if (!targetHandler) {

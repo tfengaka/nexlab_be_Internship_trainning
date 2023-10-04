@@ -38,7 +38,7 @@ const studentResolvers = {
         return error;
       }
     },
-    changePassword: async (_: any, args: { form: FormEditPasswordInput }, context: YogaInitialContext) => {
+    change_password: async (_: any, args: { form: FormEditPasswordInput }, context: YogaInitialContext) => {
       try {
         const token = context.request.headers.get('authorization')?.split(' ')[1] as string;
         return await changePassword(token, args.form);
@@ -47,7 +47,7 @@ const studentResolvers = {
         return error;
       }
     },
-    enrollClass: async (_: any, args: { classId: string }, context: YogaInitialContext) => {
+    enroll_class: async (_: any, args: { classId: string }, context: YogaInitialContext) => {
       try {
         const token = context.request.headers.get('authorization')?.split(' ')[1] as string;
         return await enrollClass(token, args.classId);

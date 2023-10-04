@@ -24,10 +24,7 @@ router.get('', async (req: Request, res: Response) => {
       [HasuraHeader.UserId]: currentUser.id,
     });
   } catch (error) {
-    console.error(error);
-    return res.json({
-      [HasuraHeader.Role]: Role.Anonymous,
-    });
+    return res.sendStatus(401);
   }
 });
 
