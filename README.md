@@ -10,12 +10,15 @@
 
 ## Running
 
-- Create `.env` file same `.env.example` to set environment variables.
-- Follow the scripts:
-
 ```shell
 $ git clone https://github.com/tfengaka/nexlab_be.git
 $ cd nexlab_be
+```
+
+- Create `.env` file same `.env.example` to set environment variables.
+- Run the scripts:
+
+```shell
 $ make start
 ```
 
