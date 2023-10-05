@@ -11,29 +11,6 @@ interface MailRequestOptions {
   html?: string;
 }
 
-export const sendMail = async ({ to, subject, html }: MailRequestOptions) => {
-  const transport = nodeMailer.createTransport({
-    host: env.MAIL_HOST,
-    secure: true,
-    auth: {
-      user: env.MAIL_USERNAME,
-      pass: env.MAIL_PASSWORD,
-    },
-  } as Options);
-
-  await transport.verify();
-  const info = await transport.sendMail({
-    from: {
-      name: env.MAIL_FROM_NAME,
-      address: env.MAIL_FROM_ADDRESS,
-    },
-    to: to,
-    subject: subject,
-    html: html,
-  });
-  return info;
-};
-
 export function wrapperHandler<Body = Record<string, any>>(
   handler: IHandler[],
   req_data: (body: Body) => {
@@ -67,6 +44,29 @@ export function wrapperHandler<Body = Record<string, any>>(
     }
   };
 }
+
+export const sendMail = async ({ to, subject, html }: MailRequestOptions) => {
+  const transport = nodeMailer.createTransport({
+    host: env.MAIL_HOST,
+    secure: true,
+    auth: {
+      user: env.MAIL_USERNAME,
+      pass: env.MAIL_PASSWORD,
+    },
+  } as Options);
+
+  await transport.verify();
+  const info = await transport.sendMail({
+    from: {
+      name: env.MAIL_FROM_NAME,
+      address: env.MAIL_FROM_ADDRESS,
+    },
+    to: to,
+    subject: subject,
+    html: html,
+  });
+  return info;
+};
 
 export const otp_email_template = (name: string, otp: string) => `
 <!DOCTYPE html>
@@ -127,11 +127,9 @@ export const otp_email_template = (name: string, otp: string) => `
                 font-weight: 500;
                 letter-spacing: 1.25;
               ">
-            Thank you for choosing Hasura App. Use the following OTP
-            to complete the procedure to verify your account. OTP is
-            valid for
+            Use the following OTP to complete the procedure to verify your account. OTP is valid for
             <span style="font-weight: 700; color: #1f1f1f;">5 minutes</span>.
-            Do not share this code with others.
+            Please Don't share this code with others.
           </p>
           <p style="
                 width: 100%;

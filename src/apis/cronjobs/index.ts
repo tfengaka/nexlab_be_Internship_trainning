@@ -3,9 +3,9 @@ import { IHandler, IHasuraCronjob } from '~/apis/types';
 import { wrapperHandler } from '~/utils';
 
 import { daily_enrollment_cleanup } from './handler/enrollment.handler';
-import { otp_cleanup_every_10_minutes } from './handler/otp_code.handler';
+import { hourly_otp_cleanup } from './handler/otp_code.handler';
 
-const handlers = [daily_enrollment_cleanup, otp_cleanup_every_10_minutes];
+const handlers = [daily_enrollment_cleanup, hourly_otp_cleanup];
 const router = Router();
 
 router.post(
