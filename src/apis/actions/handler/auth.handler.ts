@@ -1,6 +1,8 @@
 import * as bcrypt from 'bcryptjs';
 import { GraphQLError } from 'graphql';
 import jwt from 'jsonwebtoken';
+import { Op } from 'sequelize';
+
 import { IHandler } from '~/apis/types';
 import env from '~/config/env';
 import model from '~/model';
@@ -118,14 +120,17 @@ export const otp_verify: IHandler<{ form: FormOTPVerifyInput }> = async ({ paylo
   }
   const { email, otp } = payload.form;
 
-  const otp_record = model.OTP_Code.findOne({
+  const otp_record = await model.OTP_Code.findOne({
     where: {
       student_email: email,
       code: otp,
+      expired_at: {
+        [Op.gt]: Date.now(),
+      },
     },
   });
 
-  if (!otp_record) {
+  if (otp_record === null) {
     throw new GraphQLError('OTP is not valid!', {
       extensions: {
         code: 'FORBIDDEN',

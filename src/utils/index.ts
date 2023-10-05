@@ -37,7 +37,6 @@ export const sendMail = async ({ to, subject, html }: MailRequestOptions) => {
 export function wrapperHandler<Body = Record<string, any>>(
   handler: IHandler[],
   req_data: (body: Body) => {
-    id?: string;
     name: string;
     op?: OperandType;
     payload: Record<string, any>;
@@ -124,19 +123,19 @@ export const otp_email_template = (name: string, otp: string) => `
           </p>
           <p style="
                 margin: 0;
-                margin-top: 17px;
+                margin-top: 16px;
                 font-weight: 500;
-                letter-spacing: 0.56px;
+                letter-spacing: 1.25;
               ">
             Thank you for choosing Hasura App. Use the following OTP
             to complete the procedure to verify your account. OTP is
             valid for
-            <span style="font-weight: 600; color: #1f1f1f;">5 minutes</span>.
+            <span style="font-weight: 700; color: #1f1f1f;">5 minutes</span>.
             Do not share this code with others.
           </p>
           <p style="
                 width: 100%;
-                margin: 0;
+                margin-left: 25px;
                 margin-top: 40px;
                 font-size: 40px;
                 font-weight: 700;
@@ -152,7 +151,7 @@ export const otp_email_template = (name: string, otp: string) => `
       <p style="
             max-width: 400px;
             margin: 0 auto;
-            margin-top: 90px;
+            margin-top: 50px;
             text-align: center;
             font-weight: 500;
             color: #8c8c8c;

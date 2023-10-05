@@ -9,10 +9,25 @@
       action: transform
       template: |-
         {
-          "id": {{$body.id}},
           "name": {{$body.name}},
           "payload": {{$body.payload}},
-          "comment": {{$body.comment}},
+          "scheduled_time":  {{$body.scheduled_time}}
+        }
+    template_engine: Kriti
+    version: 2
+- name: otp_cleanup_every_10_minutes
+  webhook: '{{CRONJOB_BASE_ENDPOINT}}'
+  schedule: '*/10 * * * *'
+  include_in_metadata: true
+  payload: {}
+  comment: ""
+  request_transform:
+    body:
+      action: transform
+      template: |-
+        {
+          "name": {{$body.name}},
+          "payload": {{$body.payload}},
           "scheduled_time":  {{$body.scheduled_time}}
         }
     template_engine: Kriti

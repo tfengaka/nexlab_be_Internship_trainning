@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { HasuraHeader, Role } from '~/enum';
-import { getCurrentStudent } from '~/service/student.service';
+import { getCurrentStudent } from '~/graphql/service/student.service';
 
 const router: Router = Router();
 

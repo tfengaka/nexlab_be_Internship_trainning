@@ -1,4 +1,12 @@
 actions:
+  - name: otp_verify
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_BASE_ENDPOINT}}'
+      forward_client_headers: true
+    permissions:
+      - role: user
+      - role: anonymous
   - name: refresh_token
     definition:
       kind: synchronous
@@ -26,6 +34,9 @@ custom_types:
     - name: FormSignInInput
     - name: FormSignUpInput
     - name: FormRefreshTokenInput
+    - name: FormOTPVerifyInput
   objects:
-    - name: AuthOutput
+    - name: AuthTokenOutput
+    - name: SignUpOutput
+    - name: AuthVerifiedOutput
   scalars: []
