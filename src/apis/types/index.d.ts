@@ -7,46 +7,29 @@ export enum OperandType {
   Manual = 'MANUAL',
 }
 
-export interface IHasuraAction<Type = Record<string, any>> {
+export interface IHasuraAction<Payload = Record<string, any>> {
   action: {
     name: string;
   };
-  input: Type;
-  request_query: string;
+  input: Payload;
   session_variables: Record<string, string>;
 }
 
-export interface IHasuraEvent<Data = Record<string, any>> {
-  created_at: string;
-  delivery_info: {
-    current_retry: number;
-    max_retries: number;
-  };
-  event: {
-    data: Data;
-    op: OperandType;
-    session_variables: Record<string, string>;
-    trace_context: {
-      span_id: string;
-      trace_id: string;
-    };
-  };
-  id: string;
-  table: {
-    name: string;
-    schema: string;
-  };
+export interface IHasuraEvent<Payload = Record<string, any>> {
   trigger: {
     name: string;
+  };
+  event: {
+    data: Payload;
+    op: OperandType;
+    session_variables: Record<string, string>;
   };
 }
 
 export interface IHasuraCronjob<Payload = Record<string, any>> {
-  id: string;
   name: string;
   payload: Payload;
   schedule_time: string;
-  comment: string;
 }
 
 export interface IContextHandler<Payload> {
