@@ -8,7 +8,6 @@ export interface IOTPAttributes {
   code: string;
   expired_at: string;
 }
-
 interface IOTPCreationAttributes extends Optional<IOTPAttributes, 'id' | 'expired_at'> {}
 
 @Table({

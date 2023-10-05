@@ -11,6 +11,12 @@ type Mutation {
 }
 
 type Mutation {
+  resend_otp(
+    email: String!
+  ): AuthVerifiedOutput!
+}
+
+type Mutation {
   sign_in(
     form: FormSignInInput!
   ): AuthTokenOutput!

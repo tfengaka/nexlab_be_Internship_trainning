@@ -3,6 +3,11 @@
   schedule: 0 0 * * *
   include_in_metadata: true
   payload: {}
+  retry_conf:
+    num_retries: 1
+    retry_interval_seconds: 300
+    timeout_seconds: 60
+    tolerance_seconds: 21600
   comment: ""
   request_transform:
     body:
@@ -15,11 +20,16 @@
         }
     template_engine: Kriti
     version: 2
-- name: otp_cleanup_every_10_minutes
+- name: hourly_otp_cleanup
   webhook: '{{CRONJOB_BASE_ENDPOINT}}'
-  schedule: '*/10 * * * *'
+  schedule: 0 * * * *
   include_in_metadata: true
   payload: {}
+  retry_conf:
+    num_retries: 5
+    retry_interval_seconds: 180
+    timeout_seconds: 60
+    tolerance_seconds: 21600
   comment: ""
   request_transform:
     body:

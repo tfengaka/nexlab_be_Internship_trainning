@@ -1,11 +1,13 @@
 import * as bcrypt from 'bcryptjs';
 import { GraphQLError } from 'graphql';
 import jwt from 'jsonwebtoken';
+import otpGenerator from 'otp-generator';
 import { Op } from 'sequelize';
 
-import { IHandler } from '~/apis/types';
+import { IHandler, IHandlerForm } from '~/apis/types';
 import env from '~/config/env';
 import model from '~/model';
+import { otp_email_template, sendMail } from '~/utils';
 
 const refresh_tokens: Record<string, AuthToken> = {};
 
@@ -14,7 +16,7 @@ const generate_token = (id: string, secret_key: string, expiresIn?: number | str
     expiresIn: expiresIn,
   });
 
-export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ payload }) => {
+export const sign_in: IHandler<IHandlerForm<FormSignInInput>, AuthToken> = async ({ payload }) => {
   if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
@@ -41,7 +43,13 @@ export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ 
       },
     });
   }
-
+  if (student.status === 'pending' || student.verified_at === null) {
+    throw new GraphQLError('Your account is not verified yet!', {
+      extensions: {
+        code: 'FORBIDDEN',
+      },
+    });
+  }
   const access_token = generate_token(student.id, env.JWT_SECRET, '1h');
   const refresh_token = generate_token(student.id, env.JWT_REFRESH_SECRET, '30d');
   const res = { access_token, refresh_token };
@@ -50,7 +58,7 @@ export const sign_in: IHandler<{ form: FormSignInInput }, AuthToken> = async ({ 
   return res;
 };
 
-export const refresh_token: IHandler<{ form: FormRefreshTokenInput }, AuthToken> = ({ payload }) => {
+export const refresh_token: IHandler<IHandlerForm<FormRefreshTokenInput>, AuthToken> = ({ payload }) => {
   if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
@@ -86,7 +94,7 @@ export const refresh_token: IHandler<{ form: FormRefreshTokenInput }, AuthToken>
   return res;
 };
 
-export const sign_up: IHandler<{ form: FormSignUpInput }> = async ({ payload }) => {
+export const sign_up: IHandler<IHandlerForm<FormSignUpInput>> = async ({ payload }) => {
   if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
@@ -110,7 +118,7 @@ export const sign_up: IHandler<{ form: FormSignUpInput }> = async ({ payload }) 
   return { email: student.email, full_name: student.full_name };
 };
 
-export const otp_verify: IHandler<{ form: FormOTPVerifyInput }> = async ({ payload }) => {
+export const otp_verify: IHandler<IHandlerForm<FormOTPVerifyInput>> = async ({ payload }) => {
   if (!payload.form) {
     throw new GraphQLError('Invalid Input', {
       extensions: {
@@ -151,4 +159,32 @@ export const otp_verify: IHandler<{ form: FormOTPVerifyInput }> = async ({ paylo
   student.save();
 
   return { message: `Email (${email}) has been verified!` };
+};
+
+export const resend_otp: IHandler<{ email: string }> = async ({ payload }) => {
+  const account = await model.Student.findOne({ where: { email: payload.email } });
+  if (!account) {
+    throw new GraphQLError('Email is incorrect!', {
+      extensions: {
+        code: 'FORBIDDEN',
+      },
+    });
+  }
+  if (account.status === 'active' && account.verified_at !== null) {
+    return {
+      message: 'This account has been verified!',
+    };
+  }
+  await model.OTP_Code.destroy({ where: { student_email: payload.email } });
+  const otp_code = otpGenerator.generate(6, { lowerCaseAlphabets: false, specialChars: false });
+  await model.OTP_Code.create({ student_email: payload.email, code: otp_code });
+  const mailBody = {
+    to: payload.email,
+    subject: 'Verification Email',
+    html: otp_email_template(account.full_name, otp_code),
+  };
+  const mailResponse = await sendMail(mailBody);
+  return {
+    message: `Sent to ${mailResponse.envelope.to}`,
+  };
 };
