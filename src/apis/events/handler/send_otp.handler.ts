@@ -16,7 +16,7 @@ export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ payload 
       },
     });
   }
-  const otp_code = otpGenerator.generate(8, { lowerCaseAlphabets: false, specialChars: false });
+  const otp_code = otpGenerator.generate(6, { lowerCaseAlphabets: false, specialChars: false });
   await model.OTP_Code.create({ student_email: email, code: otp_code });
   const mailBody = {
     to: email,
@@ -24,5 +24,5 @@ export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ payload 
     html: otp_email_template(full_name, otp_code),
   };
   const mailResponse = await sendMail(mailBody);
-  return mailResponse;
+  return mailResponse.response;
 };

@@ -6,7 +6,7 @@ import {
   getClassDataByPk,
   getClassesByStudentId,
   updateClassNameById,
-} from '~/service/class.service';
+} from '~/graphql/service/class.service';
 
 const classResolvers = {
   Query: {

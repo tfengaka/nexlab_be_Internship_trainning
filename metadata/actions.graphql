@@ -1,19 +1,25 @@
 type Mutation {
+  otp_verify(
+    form: FormOTPVerifyInput!
+  ): AuthVerifiedOutput!
+}
+
+type Mutation {
   refresh_token(
     form: FormRefreshTokenInput!
-  ): AuthOutput!
+  ): AuthTokenOutput!
 }
 
 type Mutation {
   sign_in(
     form: FormSignInInput!
-  ): AuthOutput!
+  ): AuthTokenOutput!
 }
 
 type Mutation {
   sign_up(
     form: FormSignUpInput!
-  ): AuthOutput!
+  ): SignUpOutput!
 }
 
 input FormSignInInput {
@@ -31,8 +37,22 @@ input FormRefreshTokenInput {
   refresh_token: String!
 }
 
-type AuthOutput {
+input FormOTPVerifyInput {
+  email: String!
+  otp: String!
+}
+
+type AuthTokenOutput {
   access_token: String!
   refresh_token: String!
+}
+
+type SignUpOutput {
+  email: String!
+  full_name: String!
+}
+
+type AuthVerifiedOutput {
+  message: String!
 }
 

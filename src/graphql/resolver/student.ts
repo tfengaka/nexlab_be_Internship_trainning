@@ -6,7 +6,7 @@ import {
   getCurrentStudent,
   removeStudentByPk,
   updateStudentDataByPk,
-} from '~/service/student.service';
+} from '~/graphql/service/student.service';
 
 const studentResolvers = {
   Query: {
