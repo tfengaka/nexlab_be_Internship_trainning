@@ -1,24 +1,28 @@
+import { GraphQLError } from 'graphql';
+import otpGenerator from 'otp-generator';
 import { IHandler } from '~/apis/types';
+import model from '~/model';
 import { IStudentAttributes } from '~/model/student';
-import { sendMail } from '~/utils';
+import { otp_email_template, sendMail } from '~/utils';
 
-export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ res, payload }) => {
-  try {
-    const { email, full_name } = payload.new;
-    const mailBody = {
-      to: email,
-      subject: 'Verify your email',
-      html: `<h1>Hello ${full_name}</h1>
-      <p><b>123456</b> is a OTP to verified your account!</p>
-      `,
-    };
-    await sendMail(mailBody, (error, info) => {
-      if (error) {
-        return res.status(400).json({ Status: 'Failure', Details: error });
-      }
-      return res.status(200).json(info.response);
+export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ payload }) => {
+  const { email, full_name } = payload.new;
+  console.log('Sending OTP');
+  const account = await model.Student.findOne({ where: { email } });
+  if (!account) {
+    throw new GraphQLError('Cant found account for this email!', {
+      extensions: {
+        code: 'FORBIDDEN',
+      },
     });
-  } catch (error) {
-    return res.status(400).json({ Status: 'Failure', Details: error });
   }
+  const otp_code = otpGenerator.generate(8, { lowerCaseAlphabets: false, specialChars: false });
+  await model.OTP_Code.create({ student_email: email, code: otp_code });
+  const mailBody = {
+    to: email,
+    subject: 'Verification Email',
+    html: otp_email_template(full_name, otp_code),
+  };
+  const mailResponse = await sendMail(mailBody);
+  return mailResponse;
 };

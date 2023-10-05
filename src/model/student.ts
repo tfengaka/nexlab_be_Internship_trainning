@@ -1,7 +1,8 @@
 import { Optional } from 'sequelize';
-import { BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsToMany, Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import Class from './class';
 import Enrollment from './enrollment';
+import OTP_Code from './otp_code';
 
 export interface IStudentAttributes {
   id: string;
@@ -63,6 +64,9 @@ class Student extends Model<IStudentAttributes, IStudentCreationAttributes> {
 
   @BelongsToMany(() => Class, () => Enrollment)
   class_enrollment!: Class[];
+
+  @HasMany(() => OTP_Code)
+  otp_codes!: OTP_Code[];
 }
 
 export default Student;
