@@ -1,5 +1,4 @@
 import { GraphQLError } from 'graphql';
-
 import {
   createClass,
   getAllClasses,

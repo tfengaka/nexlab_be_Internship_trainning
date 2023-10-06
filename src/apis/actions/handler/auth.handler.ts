@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import { GraphQLError } from 'graphql';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import otpGenerator from 'otp-generator';
 import { Op } from 'sequelize';
 
@@ -15,6 +15,25 @@ const generate_token = (id: string, secret_key: string, expiresIn?: number | str
   jwt.sign({ sub: id }, secret_key, {
     expiresIn: expiresIn,
   });
+
+export const get_user_by_token = async (token: string) => {
+  if (!token)
+    throw new GraphQLError('Unauthorized user!', {
+      extensions: {
+        code: 'UNAUTHORIZED',
+      },
+    });
+
+  const { sub: student_id } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+  const student = await model.Student.findByPk(student_id);
+  if (!student)
+    throw new GraphQLError('Student are not available!', {
+      extensions: {
+        code: 'NOT_FOUND',
+      },
+    });
+  return student;
+};
 
 export const sign_in: IHandler<IHandlerForm<FormSignInInput>, AuthToken> = async ({ payload }) => {
   if (!payload.form) {
@@ -187,4 +206,39 @@ export const resend_otp: IHandler<{ email: string }> = async ({ payload }) => {
   return {
     message: `Sent to ${mailResponse.envelope.to}`,
   };
+};
+
+export const change_password: IHandler<IHandlerForm<FormEditPasswordInput>> = async ({ req, payload }) => {
+  const token = req.headers.authorization?.split(' ')[1] as string;
+  if (!token) {
+    throw new GraphQLError('Invalid request!', {
+      extensions: {
+        code: 'BAD_REQUEST',
+      },
+    });
+  }
+  const student = await get_user_by_token(token);
+
+  const { oldPassword, newPassword } = payload.form;
+  const oldPasswordMatch = await bcrypt.compare(oldPassword, student.password);
+  if (!oldPasswordMatch)
+    throw new GraphQLError('Current password is incorrect!', {
+      extensions: {
+        code: 'UNAUTHORIZED',
+      },
+    });
+
+  if (oldPassword === newPassword) {
+    throw new GraphQLError('The new password must be different from the old password', {
+      extensions: {
+        code: 'BAD_REQUEST',
+      },
+    });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const newHashedPassword = await bcrypt.hash(newPassword, salt);
+  student.password = newHashedPassword;
+  student.save();
+  return { message: 'Password has been changed!' };
 };

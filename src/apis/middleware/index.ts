@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
-import { HasuraHeader, Role } from '~/apis/types';
-import { getCurrentStudent } from '~/graphql/service/student.service';
+import { get_user_by_token } from '../actions/handler/auth.handler';
+import { HasuraHeader, Role } from '../types';
 
 const router: Router = Router();
 
@@ -12,7 +12,7 @@ router.get('', async (req: Request, res: Response) => {
         [HasuraHeader.Role]: Role.Anonymous,
       });
     const token = bearer_token.split(' ')[1];
-    const currentUser = await getCurrentStudent(token);
+    const currentUser = await get_user_by_token(token);
 
     if (!currentUser)
       return res.json({

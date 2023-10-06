@@ -1,7 +1,19 @@
 type Mutation {
+  change_password(
+    form: FormEditPasswordInput!
+  ): MessageOutput!
+}
+
+type Mutation {
+  enroll_class(
+    class_id: String!
+  ): MessageOutput!
+}
+
+type Mutation {
   otp_verify(
     form: FormOTPVerifyInput!
-  ): AuthVerifiedOutput!
+  ): MessageOutput!
 }
 
 type Mutation {
@@ -13,7 +25,7 @@ type Mutation {
 type Mutation {
   resend_otp(
     email: String!
-  ): AuthVerifiedOutput!
+  ): MessageOutput!
 }
 
 type Mutation {
@@ -48,6 +60,11 @@ input FormOTPVerifyInput {
   otp: String!
 }
 
+input FormEditPasswordInput {
+  oldPassword: String!
+  newPassword: String!
+}
+
 type AuthTokenOutput {
   access_token: String!
   refresh_token: String!
@@ -58,7 +75,7 @@ type SignUpOutput {
   full_name: String!
 }
 
-type AuthVerifiedOutput {
+type MessageOutput {
   message: String!
 }
 

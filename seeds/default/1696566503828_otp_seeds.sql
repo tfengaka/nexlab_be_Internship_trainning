@@ -1,0 +1,5 @@
+SET check_function_bodies = false;
+INSERT INTO public.otp_code (id, code, student_email, expired_at, created_at, updated_at) VALUES ('f095dc5a-5046-4e0c-af60-e87c3d72e23c', 'CMHZO9', 'student1@gmail.com', '2023-10-06 04:16:38.815207+00', '2023-10-06 04:11:38.815207+00', '2023-10-06 04:11:38.815207+00');
+INSERT INTO public.otp_code (id, code, student_email, expired_at, created_at, updated_at) VALUES ('e4e3b49f-cf26-4f1e-9e48-d2940b9a4b67', '1FOK37', 'student2@gmail.com', '2023-10-06 04:16:38.821597+00', '2023-10-06 04:11:38.821597+00', '2023-10-06 04:11:38.821597+00');
+INSERT INTO public.otp_code (id, code, student_email, expired_at, created_at, updated_at) VALUES ('dd042041-493b-4512-9d1d-e4b49734f179', '8XA6YX', 'hoa.nguyen@nexlab.tech', '2023-10-06 04:16:38.827455+00', '2023-10-06 04:11:38.827455+00', '2023-10-06 04:11:38.827455+00');
+INSERT INTO public.otp_code (id, code, student_email, expired_at, created_at, updated_at) VALUES ('66fb93f3-5e82-4c12-8762-3c28537bb0bf', 'XZHU55', 'nthoa2.lhp.nh@gmail.com', '2023-10-06 04:16:38.830196+00', '2023-10-06 04:11:38.830196+00', '2023-10-06 04:11:38.830196+00');
