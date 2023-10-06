@@ -1,4 +1,18 @@
 actions:
+  - name: change_password
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_BASE_ENDPOINT}}'
+      forward_client_headers: true
+    permissions:
+      - role: user
+  - name: enroll_class
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_BASE_ENDPOINT}}'
+      forward_client_headers: true
+    permissions:
+      - role: user
   - name: otp_verify
     definition:
       kind: synchronous
@@ -28,6 +42,7 @@ actions:
       handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
+      - role: user
       - role: anonymous
   - name: sign_up
     definition:
@@ -43,8 +58,9 @@ custom_types:
     - name: FormSignUpInput
     - name: FormRefreshTokenInput
     - name: FormOTPVerifyInput
+    - name: FormEditPasswordInput
   objects:
     - name: AuthTokenOutput
     - name: SignUpOutput
-    - name: AuthVerifiedOutput
+    - name: MessageOutput
   scalars: []
