@@ -147,24 +147,6 @@ export const otp_verify: IHandler<IHandlerForm<FormOTPVerifyInput>> = async ({ p
   }
   const { email, otp } = payload.form;
 
-  const otp_record = await model.OTP_Code.findOne({
-    where: {
-      student_email: email,
-      code: otp,
-      expired_at: {
-        [Op.gt]: Date.now(),
-      },
-    },
-  });
-
-  if (otp_record === null) {
-    throw new GraphQLError('OTP is not valid!', {
-      extensions: {
-        code: 'FORBIDDEN',
-      },
-    });
-  }
-
   const student = await model.Student.findOne({ where: { email } });
   if (!student) {
     throw new GraphQLError('Email is incorrect!', {
@@ -173,6 +155,32 @@ export const otp_verify: IHandler<IHandlerForm<FormOTPVerifyInput>> = async ({ p
       },
     });
   }
+
+  const otp_record = await model.OTP_Code.findOne({
+    where: {
+      student_email: email,
+      expired_at: {
+        [Op.gt]: Date.now(),
+      },
+    },
+  });
+  if (otp_record === null) {
+    throw new GraphQLError('OTP is not valid!', {
+      extensions: {
+        code: 'FORBIDDEN',
+      },
+    });
+  }
+
+  const isMatchOtp = await bcrypt.compare(otp, otp_record.code);
+  if (!isMatchOtp) {
+    throw new GraphQLError('OTP are incorrect!', {
+      extensions: {
+        code: 'FORBIDDEN',
+      },
+    });
+  }
+
   student.status = 'active';
   student.verified_at = new Date();
   student.save();
@@ -196,7 +204,9 @@ export const resend_otp: IHandler<{ email: string }> = async ({ payload }) => {
   }
   await model.OTP_Code.destroy({ where: { student_email: payload.email } });
   const otp_code = otpGenerator.generate(6, { lowerCaseAlphabets: false, specialChars: false });
-  await model.OTP_Code.create({ student_email: payload.email, code: otp_code });
+  const salt = await bcrypt.genSalt(10);
+  const hashOtp = await bcrypt.hash(otp_code, salt);
+  await model.OTP_Code.create({ student_email: payload.email, code: hashOtp });
   const mailBody = {
     to: payload.email,
     subject: 'Verification Email',

@@ -4,6 +4,7 @@ import { IHandler } from '~/apis/types';
 import model from '~/model';
 import { IStudentAttributes } from '~/model/student';
 import { otp_email_template, sendMail } from '~/utils';
+import * as bcrypt from 'bcryptjs';
 
 export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ payload }) => {
   const { email, full_name } = payload.new;
@@ -16,7 +17,9 @@ export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ payload 
     });
   }
   const otp_code = otpGenerator.generate(6, { lowerCaseAlphabets: false, specialChars: false });
-  await model.OTP_Code.create({ student_email: email, code: otp_code });
+  const salt = await bcrypt.genSalt(10);
+  const hashOtp = await bcrypt.hash(otp_code, salt);
+  await model.OTP_Code.create({ student_email: email, code: hashOtp });
   const mailBody = {
     to: email,
     subject: 'Verification Email',
