@@ -33,3 +33,10 @@ interface FormEditPasswordInput {
   oldPassword: string;
   newPassword: string;
 }
+
+interface IStudentStats {
+  student_id: string;
+  student_name: string;
+  register_class_count: number;
+  unregister_class_count: number;
+}

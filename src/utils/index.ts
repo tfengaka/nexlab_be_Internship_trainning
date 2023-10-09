@@ -11,6 +11,8 @@ interface MailRequestOptions {
   html?: string;
 }
 
+export const OUTPUT_DIR = `${__dirname}/../../dist/xlsx`;
+
 export function wrapperHandler<Body = Record<string, any>>(
   handler: IHandler[],
   req_data: (body: Body) => {
