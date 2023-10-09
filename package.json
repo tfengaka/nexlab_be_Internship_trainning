@@ -48,6 +48,6 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.33.0",
     "sequelize-typescript": "^2.1.5",
-    "xlsx": "file:vendor/xlsx-0.20.0.tgz"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.0/xlsx-0.20.0.tgz"
   }
 }
