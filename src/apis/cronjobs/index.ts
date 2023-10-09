@@ -4,8 +4,9 @@ import { wrapperHandler } from '~/utils';
 
 import { daily_enrollment_cleanup } from './handler/enrollment.handler';
 import { hourly_otp_cleanup } from './handler/otp_code.handler';
+import { daily_export_file_cleanup } from './handler/stats.handler';
 
-const handlers = [daily_enrollment_cleanup, hourly_otp_cleanup];
+const handlers = [daily_enrollment_cleanup, hourly_otp_cleanup, daily_export_file_cleanup];
 const router = Router();
 
 router.post(

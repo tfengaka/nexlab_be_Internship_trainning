@@ -20,6 +20,23 @@
         }
     template_engine: Kriti
     version: 2
+- name: daily_export_file_cleanup
+  webhook: '{{CRONJOB_BASE_ENDPOINT}}'
+  schedule: 0 0 * * *
+  include_in_metadata: true
+  payload: {}
+  comment: ""
+  request_transform:
+    body:
+      action: transform
+      template: |-
+        {
+          "name": {{$body.name}},
+          "payload": {{$body.payload}},
+          "scheduled_time":  {{$body.scheduled_time}}
+        }
+    template_engine: Kriti
+    version: 2
 - name: hourly_otp_cleanup
   webhook: '{{CRONJOB_BASE_ENDPOINT}}'
   schedule: 0 * * * *
