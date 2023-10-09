@@ -10,6 +10,10 @@ type Mutation {
   ): MessageOutput!
 }
 
+type Query {
+  get_student_stats: UrlOutput!
+}
+
 type Mutation {
   otp_verify(
     form: FormOTPVerifyInput!
@@ -77,5 +81,9 @@ type SignUpOutput {
 
 type MessageOutput {
   message: String!
+}
+
+type UrlOutput {
+  url: String!
 }
 

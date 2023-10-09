@@ -36,6 +36,6 @@ export const get_student_stats: IHandler = async ({ req, res }) => {
   const file_path = path.join(OUTPUT_DIR, file_name);
   fs.writeFileSync(file_path, output);
   return {
-    message: `${req.protocol}://${env.HOST}/download/file?name=${file_name}`,
+    url: `${req.protocol}://${env.HOST}/download/file?name=${file_name}`,
   };
 };

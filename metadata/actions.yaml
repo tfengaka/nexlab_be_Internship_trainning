@@ -13,6 +13,11 @@ actions:
       forward_client_headers: true
     permissions:
       - role: user
+  - name: get_student_stats
+    definition:
+      kind: ""
+      handler: '{{ACTION_BASE_ENDPOINT}}'
+      forward_client_headers: true
   - name: otp_verify
     definition:
       kind: synchronous
@@ -63,4 +68,5 @@ custom_types:
     - name: AuthTokenOutput
     - name: SignUpOutput
     - name: MessageOutput
+    - name: UrlOutput
   scalars: []
