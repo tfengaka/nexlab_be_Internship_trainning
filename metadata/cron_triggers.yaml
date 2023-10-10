@@ -39,7 +39,7 @@
     version: 2
 - name: hourly_otp_cleanup
   webhook: '{{CRONJOB_BASE_ENDPOINT}}'
-  schedule: 0 * * * *
+  schedule: 0 0 * * *
   include_in_metadata: true
   payload: {}
   retry_conf:

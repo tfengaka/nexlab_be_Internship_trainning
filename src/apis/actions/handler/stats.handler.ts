@@ -1,12 +1,9 @@
-import fs from 'fs';
-import path from 'path';
 import xlsx from 'xlsx';
 import { IHandler } from '~/apis/types';
-import env from '~/config/env';
 import { sequelize } from '~/model';
-import { OUTPUT_DIR } from '~/utils';
+import { uploadToFirebase } from '~/utils';
 
-export const get_student_stats: IHandler = async ({ req, res }) => {
+export const export_student_stats: IHandler = async () => {
   const records = await sequelize.query('SELECT * FROM student_stats');
   const result = records[0] as IStudentStats[];
 
@@ -24,18 +21,12 @@ export const get_student_stats: IHandler = async ({ req, res }) => {
   });
   worksheet['!cols'] = [{ wch: 35 }, { wch: 40 }, { wch: 20 }, { wch: 20 }];
   xlsx.utils.book_append_sheet(workbook, worksheet, 'students_stats');
-  const output = xlsx.write(workbook, {
-    type: 'buffer',
+  const outputFirebase = xlsx.write(workbook, {
+    type: 'array',
     compression: true,
     bookType: 'xlsx',
   });
-  const randomNumber = Math.floor(Math.random() * 1000)
-    .toString()
-    .padStart(3, '0');
-  const file_name = `${randomNumber}-students-stats.xlsx`;
-  const file_path = path.join(OUTPUT_DIR, file_name);
-  fs.writeFileSync(file_path, output);
-  return {
-    url: `${req.protocol}://${env.HOST}/download/file?name=${file_name}`,
-  };
+  const file_name = `${Date.now().toString()}_students_stats.xlsx`;
+  const url = await uploadToFirebase(outputFirebase, `exports/xlsx/${file_name}`);
+  return { url };
 };

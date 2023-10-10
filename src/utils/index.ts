@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { GraphQLError } from 'graphql';
 import nodeMailer from 'nodemailer';
 import { Options } from 'nodemailer/lib/smtp-transport';
 import { IHandler, OperandType } from '~/apis/types';
 import env from '~/config/env';
+import { storage } from '~/config/firebase';
 
 interface MailRequestOptions {
   to: string;
@@ -167,3 +169,11 @@ export const otp_email_template = (name: string, otp: string) => `
 
 </html>
 `;
+
+export const uploadToFirebase = async (data: ArrayBuffer | Blob | Uint8Array, file_path: string) => {
+  const storage_ref = ref(storage, file_path);
+  const upload = await uploadBytesResumable(storage_ref, data, {
+    contentType: 'xlsx',
+  });
+  return await getDownloadURL(upload.ref);
+};
