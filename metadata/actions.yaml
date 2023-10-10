@@ -13,7 +13,7 @@ actions:
       forward_client_headers: true
     permissions:
       - role: user
-  - name: get_student_stats
+  - name: export_student_stats
     definition:
       kind: ""
       handler: '{{ACTION_BASE_ENDPOINT}}'

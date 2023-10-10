@@ -1,7 +1,6 @@
 import cors from 'cors';
 import express, { Router } from 'express';
 import { createYoga } from 'graphql-yoga';
-
 import env from '~/config/env';
 import { schema } from '~/graphql';
 import { connectDatabase } from '~/model';
@@ -10,7 +9,6 @@ import { router as actionRouter } from '~/apis/actions';
 import { router as cronRouter } from '~/apis/cronjobs';
 import { router as eventRouter } from '~/apis/events';
 import { router as middlewareRouter } from '~/apis/middleware';
-import { router as downloadRouter } from '~/apis/download';
 
 function initialServer() {
   // Initialize the graphql-yoga app
@@ -34,10 +32,10 @@ function initialServer() {
   app.use('/actions', actionRouter);
   app.use('/events', eventRouter);
   app.use('/cronjobs', cronRouter);
-  app.use('/download', downloadRouter);
+
   app.listen(env.PORT, () => {
     console.log(`🚀  App listening on port ${env.PORT}`);
-    console.log(`🚀  Yoga Playground are running at http://127.0.0.1:${env.PORT}/graphql\n`);
+    console.log(`🚀  Yoga Playground are running at http://127.0.0.1:${env.PORT}/graphql`);
   });
 }
 

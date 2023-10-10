@@ -1,33 +1,20 @@
-import fs from 'fs';
-import { GraphQLError } from 'graphql';
-import path from 'path';
+import { deleteObject, listAll, ref } from 'firebase/storage';
 import { IHandler } from '~/apis/types';
-import { OUTPUT_DIR } from '~/utils';
+import { storage } from '~/config/firebase';
 
 export const daily_export_file_cleanup: IHandler = () => {
-  let counter = 0;
-
-  fs.readdir(OUTPUT_DIR, (err, files) => {
-    if (err) {
-      console.error('Lỗi khi đọc thư mục: ', err);
-      return;
-    }
-    files.forEach((file) => {
-      if (path.extname(file) === '.xlsx') {
-        const filePath = path.join(OUTPUT_DIR, file);
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            console.error(`Delete ${file} error: `, err);
-            throw new GraphQLError(err.message, {
-              extensions: {
-                code: err.code,
-              },
-            });
-          }
-          counter++;
-        });
-      }
+  console.log('Cleaning up');
+  const listRef = ref(storage, 'exports/xlsx');
+  listAll(listRef)
+    .then((res) => {
+      res.items.forEach(async (itemRef) => {
+        const desertRef = ref(storage, itemRef.fullPath);
+        await deleteObject(desertRef);
+      });
+    })
+    .catch((error) => {
+      throw error;
     });
-  });
-  return `affected_rows: ${counter}`;
+  console.log('Cleaned up storage');
+  return 'Cleaned up';
 };
