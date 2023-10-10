@@ -40,7 +40,6 @@
     "firebase": "^10.4.0",
     "graphql": "^16.8.0",
     "graphql-yoga": "^4.0.4",
-    "joi": "^17.10.2",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.5",
     "otp-generator": "^4.0.1",
