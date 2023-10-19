@@ -1,5 +1,5 @@
 import { Optional } from 'sequelize';
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, CreatedAt, DataType, ForeignKey, Model, Table, UpdatedAt } from 'sequelize-typescript';
 import Student from './student';
 
 export interface IOTPAttributes {
@@ -10,10 +10,7 @@ export interface IOTPAttributes {
 }
 interface IOTPCreationAttributes extends Optional<IOTPAttributes, 'id' | 'expired_at'> {}
 
-@Table({
-  tableName: 'otp_code',
-  timestamps: false,
-})
+@Table({ tableName: 'otp_code' })
 export default class OTP_Code extends Model<IOTPAttributes, IOTPCreationAttributes> {
   @Column({
     type: DataType.UUID,
@@ -33,6 +30,12 @@ export default class OTP_Code extends Model<IOTPAttributes, IOTPCreationAttribut
     type: DataType.DATE,
   })
   expired_at!: string;
+
+  @CreatedAt
+  created_at!: Date;
+
+  @UpdatedAt
+  updated_at!: Date;
 
   @ForeignKey(() => Student)
   @Column

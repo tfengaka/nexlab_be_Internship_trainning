@@ -2,7 +2,6 @@ version: '3.3'
 services:
   express-app:
     container_name: express
-    tty: true
     build: .
     ports:
       - ${PORT}:${PORT}
@@ -14,7 +13,6 @@ services:
   hasura-engine:
     image: hasura/graphql-engine:v2.33.0
     container_name: hasura-console
-    tty: true
     ports:
       - 8080:8080
     restart: always

@@ -4,7 +4,6 @@ dotenv.config();
 const env = {
   // App
   NODE_ENV: process.env.NODE_ENV ? (process.env.NODE_ENV as NodeEnv) : 'development',
-  HOST: process.env.HOST,
   JWT_SECRET: process.env.JWT_SECRET as string,
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
   PORT: Number(process.env.PORT),
@@ -19,7 +18,6 @@ const env = {
   MAIL_HOST: process.env.MAIL_HOST,
   MAIL_USERNAME: process.env.MAIL_USERNAME,
   MAIL_PASSWORD: process.env.MAIL_PASSWORD,
-  MAIL_FROM_ADDRESS: process.env.MAIL_FROM_ADDRESS as string,
   MAIL_FROM_NAME: process.env.MAIL_FROM_NAME as string,
 
   // Firebase

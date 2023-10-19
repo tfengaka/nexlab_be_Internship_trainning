@@ -34,7 +34,6 @@ $ make start
 
 ```shell
   make migrate
-  make metadata-apply
   make seed # Insert example data (Optional)
 ```
 

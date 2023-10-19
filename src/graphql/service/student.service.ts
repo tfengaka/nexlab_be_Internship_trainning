@@ -28,6 +28,7 @@ export const getCurrentStudent = async (token: string, hasClasses: boolean = tru
     ? await models.Student.findByPk(studentId, {
         include: {
           model: models.Class,
+          as: 'class',
           attributes: {
             include: ['id', 'class_name'],
           },
@@ -40,6 +41,7 @@ export const getCurrentStudent = async (token: string, hasClasses: boolean = tru
         code: 'NOT_FOUND',
       },
     });
+  console.log(student);
   return student;
 };
 

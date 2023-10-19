@@ -1,7 +1,7 @@
 import { Optional } from 'sequelize';
-import { BelongsToMany, Column, DataType, Model, Table } from 'sequelize-typescript';
-import Student from './student';
+import { BelongsToMany, Column, CreatedAt, DataType, Model, Table, UpdatedAt } from 'sequelize-typescript';
 import Enrollment from './enrollment';
+import Student from './student';
 
 export interface IClassAttributes {
   id: string;
@@ -10,10 +10,7 @@ export interface IClassAttributes {
 }
 interface IClassCreationAttributes extends Optional<IClassAttributes, 'id' | 'status'> {}
 
-@Table({
-  tableName: 'class',
-  timestamps: false,
-})
+@Table({ tableName: 'class' })
 class Class extends Model<IClassAttributes, IClassCreationAttributes> {
   @Column({
     type: DataType.UUID,
@@ -35,6 +32,12 @@ class Class extends Model<IClassAttributes, IClassCreationAttributes> {
     allowNull: false,
   })
   status!: string;
+
+  @CreatedAt
+  created_at!: Date;
+
+  @UpdatedAt
+  updated_at!: Date;
 
   @BelongsToMany(() => Student, () => Enrollment)
   student_enrollment!: Student[];

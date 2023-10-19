@@ -61,10 +61,7 @@ export const sendMail = async ({ to, subject, html }: MailRequestOptions) => {
 
   await transport.verify();
   const info = await transport.sendMail({
-    from: {
-      name: env.MAIL_FROM_NAME,
-      address: env.MAIL_FROM_ADDRESS,
-    },
+    from: env.MAIL_FROM_NAME,
     to: to,
     subject: subject,
     html: html,

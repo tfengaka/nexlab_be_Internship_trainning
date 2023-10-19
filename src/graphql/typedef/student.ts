@@ -15,7 +15,7 @@ const studentTypeDefs = /* GraphQL */ `
   }
   type StudentWithClass {
     ${studentType}
-    classes: [Class]!
+    class: [Class]!
   }
   type AuthOutput {
     access_token: String!
