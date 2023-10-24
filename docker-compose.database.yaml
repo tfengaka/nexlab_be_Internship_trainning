@@ -11,9 +11,19 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - data/postgres:/var/lib/postgresql/data
       - ./scripts/docker-entrypoint-initdb.d/create_hdb.sql:/docker-entrypoint-initdb.d/create_hdb.sql
     env_file:
       - .env
+  redis:
+    image: redis:alpine3.18
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    volumes:
+      - data/redis:/var/lib/redis/data
+    env_file:
+      - .env
 volumes:
-  db_data:
+  data:

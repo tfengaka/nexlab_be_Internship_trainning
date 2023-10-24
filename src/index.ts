@@ -35,7 +35,6 @@ function initialServer() {
 
   app.listen(env.PORT, () => {
     console.log(`🚀  App listening on port ${env.PORT}`);
-    console.log(`🚀  Yoga Playground are running at http://127.0.0.1:${env.PORT}/graphql`);
   });
 }
 

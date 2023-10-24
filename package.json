@@ -45,6 +45,7 @@
     "otp-generator": "^4.0.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
+    "redis": "^4.6.10",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.33.0",
     "sequelize-typescript": "^2.1.5",

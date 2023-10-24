@@ -14,6 +14,10 @@ const env = {
   DB_USER: process.env.POSTGRES_USER,
   DB_PASSWORD: process.env.POSTGRES_PASSWORD,
 
+  // REDIS
+  REDIS_HOST: process.env.REDIS_HOST || 'localhost',
+  REDIS_PORT: Number(process.env.REDIS_PORT) || 6379,
+
   // Nodemailer
   MAIL_HOST: process.env.MAIL_HOST,
   MAIL_USERNAME: process.env.MAIL_USERNAME,
