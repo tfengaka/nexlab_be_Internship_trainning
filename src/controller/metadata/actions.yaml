@@ -18,6 +18,11 @@ actions:
       kind: ""
       handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
+  - name: get_excel_data_from_url
+    definition:
+      kind: ""
+      handler: '{{ACTION_BASE_ENDPOINT}}'
+      forward_client_headers: true
   - name: otp_verify
     definition:
       kind: synchronous

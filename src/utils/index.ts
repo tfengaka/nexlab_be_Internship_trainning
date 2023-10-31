@@ -167,10 +167,10 @@ export const otp_email_template = (name: string, otp: string) => `
 </html>
 `;
 
-export const uploadToFirebase = async (data: ArrayBuffer | Blob | Uint8Array, file_path: string) => {
+export const uploadToFirebase = async (data: ArrayBuffer | Blob | Uint8Array, file_path: string, type?: string) => {
   const storage_ref = ref(storage, file_path);
   const upload = await uploadBytesResumable(storage_ref, data, {
-    contentType: 'xlsx',
+    contentType: type || 'xlsx',
   });
   return await getDownloadURL(upload.ref);
 };

@@ -14,6 +14,12 @@ type Query {
   export_student_stats: UrlOutput!
 }
 
+type Query {
+  get_excel_data_from_url(
+    url: String!
+  ): [String]!
+}
+
 type Mutation {
   otp_verify(
     form: FormOTPVerifyInput!
