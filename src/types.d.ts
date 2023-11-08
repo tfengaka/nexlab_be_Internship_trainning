@@ -40,3 +40,11 @@ interface IStudentStats {
   register_class_count: number;
   unregister_class_count: number;
 }
+
+interface IBarcodeInput {
+  url: string;
+  size: {
+    width: number;
+    height: number;
+  };
+}

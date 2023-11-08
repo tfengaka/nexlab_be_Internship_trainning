@@ -1,7 +1,7 @@
 #!make
 include .env
 
-PROJECT=student_api
+PROJECT=student-api
 HASURA_DIR=src/controller
 
 start: 

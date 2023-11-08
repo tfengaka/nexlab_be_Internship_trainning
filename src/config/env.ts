@@ -32,6 +32,9 @@ const env = {
   FIREBASE_SENDER_ID: process.env.FIREBASE_SENDER_ID as string,
   FIREBASE_APP_ID: process.env.FIREBASE_APP_ID as string,
   FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID as string,
+
+  // Mindee
+  BARCODE_READER_KEY: process.env.BARCODE_READER_KEY as string,
 };
 
 export default env;

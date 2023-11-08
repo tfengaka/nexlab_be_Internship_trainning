@@ -1,3 +1,4 @@
+import { BinaryBitmap } from '@zxing/library';
 import { Request, Response } from 'express';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { GraphQLError } from 'graphql';
