@@ -31,6 +31,10 @@ actions:
     permissions:
       - role: user
       - role: anonymous
+  - name: parse_barcode_from_url
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_BASE_ENDPOINT}}'
   - name: refresh_token
     definition:
       kind: synchronous
@@ -69,6 +73,7 @@ custom_types:
     - name: FormRefreshTokenInput
     - name: FormOTPVerifyInput
     - name: FormEditPasswordInput
+    - name: FormBarcodeInput
   objects:
     - name: AuthTokenOutput
     - name: SignUpOutput

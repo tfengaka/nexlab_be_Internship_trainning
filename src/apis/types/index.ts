@@ -57,3 +57,13 @@ export type IHandler<Req = Record<string, unknown>, Res = Record<string, any>> =
 export interface IHandlerForm<T> {
   form: T;
 }
+
+export enum IBarcodeFormat {
+  Barcode = 'barcode',
+  QRCode = 'qrcode',
+}
+
+export interface IBarcodeInput {
+  url: string;
+  type: IBarcodeFormat;
+}

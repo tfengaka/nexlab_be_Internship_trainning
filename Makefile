@@ -1,7 +1,7 @@
 #!make
 include .env
 
-PROJECT=student-api
+PROJECT=be-testing
 HASURA_DIR=src/controller
 
 start: 
@@ -27,6 +27,9 @@ metadata-reload:
 
 seed:
 	cd ${HASURA_DIR} && hasura seed apply
+
+metadata-export:
+	cd ${HASURA_DIR} && hasura metadata export --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
 
 %:
 	@echo "Done"

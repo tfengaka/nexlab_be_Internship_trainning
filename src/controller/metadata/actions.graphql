@@ -27,6 +27,12 @@ type Mutation {
 }
 
 type Mutation {
+  parse_barcode_from_url(
+    form: FormBarcodeInput!
+  ): MessageOutput!
+}
+
+type Mutation {
   refresh_token(
     form: FormRefreshTokenInput!
   ): AuthTokenOutput!
@@ -73,6 +79,11 @@ input FormOTPVerifyInput {
 input FormEditPasswordInput {
   oldPassword: String!
   newPassword: String!
+}
+
+input FormBarcodeInput {
+  type: String!
+  url: String!
 }
 
 type AuthTokenOutput {
