@@ -1,9 +1,22 @@
 import Quagga from '@ericblade/quagga2';
 import { Decoder } from '@nuintun/qrcode';
 import axios from 'axios';
-import { GraphQLError } from 'graphql';
 import Jimp from 'jimp';
+import { GraphQLError } from 'graphql';
 import { IBarcodeFormat, IBarcodeInput, IHandler, IHandlerForm } from '~/apis/types';
+
+interface IScanDevice {
+  id: string;
+  modelNumber: string;
+  serialNumber: string;
+  type: string;
+  deviceType: {
+    id: string;
+    code: string;
+    englishName: string;
+    name: string;
+  };
+}
 
 export const parse_barcode_from_url: IHandler<IHandlerForm<IBarcodeInput>> = async ({ payload }) => {
   const { form } = payload;
@@ -60,17 +73,15 @@ const detectBarcode = async (imageUrl: string) => {
     },
   });
   if (barcodeResult && barcodeResult.codeResult) {
-    return { message: `Barcode Value: ${barcodeResult.codeResult.code}` };
+    const modelDevice = parseModelDataFromDecodeValue(barcodeResult.codeResult.code as string);
+    return { message: `Barcode Value: ${modelDevice}` };
   }
 
   return { message: 'Can not detect barcode from this image!' };
 };
 
 export const detectQRCode = async (imageUrl: string) => {
-  const QRCodeDecoder = new Decoder({
-    canOverwriteImage: true,
-    inversionAttempts: 'attemptBoth',
-  });
+  const QRCodeDecoder = new Decoder();
 
   const imgBuffer = await axios
     .get(imageUrl, { responseType: 'arraybuffer' })
@@ -82,8 +93,14 @@ export const detectQRCode = async (imageUrl: string) => {
 
   const result = QRCodeDecoder.decode(uint8Array, width, height);
   if (result) {
-    console.log(result);
+    const modelDevice = parseModelDataFromDecodeValue(result.data);
+    console.log(modelDevice);
     return { message: `QRCode Data: ${result.data}` };
   }
   return { message: 'Can not detect QR code from this image!' };
 };
+
+export const parseModelDataFromDecodeValue = (decodeValue: string) => ({
+  modelNumber: decodeValue.slice(0, 6),
+  serialNumber: decodeValue.slice(6, -1),
+});

@@ -4,7 +4,7 @@ services:
     container_name: express
     build: .
     ports:
-      - ${PORT}:${PORT}
+      - ${APP_PORT}:${APP_PORT}
     working_dir: /app
     volumes:
       - .:/app
@@ -12,8 +12,8 @@ services:
       - redis
       - postgres
   hasura-engine:
-    image: hasura/graphql-engine:v2.33.0
-    container_name: hasura-console
+    image: hasura/graphql-engine:v2.35.0
+    container_name: controller
     ports:
       - 8080:8080
     restart: always
@@ -24,11 +24,11 @@ services:
       HASURA_GRAPHQL_DEV_MODE: 'true'
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      HASURA_GRAPHQL_AUTH_HOOK: http://express:${PORT}/verify
-      REMOTE_SCHEMA_ENDPOINT: http://express:${PORT}/graphql
+      HASURA_GRAPHQL_AUTH_HOOK: http://express:${APP_PORT}/verify
+      REMOTE_SCHEMA_ENDPOINT: http://express:${APP_PORT}/graphql
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: 'true'
-      ACTION_BASE_ENDPOINT: http://express:${PORT}/actions
-      EVENT_BASE_ENDPOINT: http://express:${PORT}/events
-      CRONJOB_BASE_ENDPOINT: http://express:${PORT}/cronjobs
+      ACTION_BASE_ENDPOINT: http://express:${APP_PORT}/actions
+      EVENT_BASE_ENDPOINT: http://express:${APP_PORT}/events
+      CRONJOB_BASE_ENDPOINT: http://express:${APP_PORT}/cronjobs
     depends_on:
       - express-app

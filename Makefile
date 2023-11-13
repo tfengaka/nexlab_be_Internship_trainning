@@ -1,10 +1,10 @@
 #!make
 include .env
 
-PROJECT=be-testing
+PROJECT=testing
 HASURA_DIR=src/controller
 
-start: 
+dev: 
 	docker-compose -f docker-compose.yaml -f docker-compose.database.yaml  -p ${PROJECT} up -d ${SERVICE}
 
 down: 

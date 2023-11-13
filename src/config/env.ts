@@ -6,7 +6,7 @@ const env = {
   NODE_ENV: process.env.NODE_ENV ? (process.env.NODE_ENV as NodeEnv) : 'development',
   JWT_SECRET: process.env.JWT_SECRET as string,
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
-  PORT: Number(process.env.PORT),
+  PORT: Number(process.env.APP_PORT),
 
   // PostgreSQL
   DB_HOST: process.env.POSTGRES_HOST || 'localhost',
@@ -32,9 +32,6 @@ const env = {
   FIREBASE_SENDER_ID: process.env.FIREBASE_SENDER_ID as string,
   FIREBASE_APP_ID: process.env.FIREBASE_APP_ID as string,
   FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID as string,
-
-  // Mindee
-  BARCODE_READER_KEY: process.env.BARCODE_READER_KEY as string,
 };
 
 export default env;
