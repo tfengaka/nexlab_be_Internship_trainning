@@ -156,7 +156,7 @@ export const otp_verify: IHandler<IHandlerForm<FormOTPVerifyInput>> = async ({ p
     });
   }
 
-  const otp_record = await model.OTP_Code.findOne({
+  const otp_record = await model.OTPCode.findOne({
     where: {
       student_email: email,
       expired_at: {
@@ -202,11 +202,11 @@ export const resend_otp: IHandler<{ email: string }> = async ({ payload }) => {
       message: 'This account has been verified!',
     };
   }
-  await model.OTP_Code.destroy({ where: { student_email: payload.email } });
+  await model.OTPCode.destroy({ where: { student_email: payload.email } });
   const otp_code = otpGenerator.generate(6, { lowerCaseAlphabets: false, specialChars: false });
   const salt = await bcrypt.genSalt(10);
   const hashOtp = await bcrypt.hash(otp_code, salt);
-  await model.OTP_Code.create({ student_email: payload.email, code: hashOtp });
+  await model.OTPCode.create({ student_email: payload.email, code: hashOtp });
   const mailBody = {
     to: payload.email,
     subject: 'Verification Email',

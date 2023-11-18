@@ -79,4 +79,5 @@ custom_types:
     - name: SignUpOutput
     - name: MessageOutput
     - name: UrlOutput
+    - name: ModelDevice
   scalars: []

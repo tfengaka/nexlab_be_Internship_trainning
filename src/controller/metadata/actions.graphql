@@ -29,7 +29,7 @@ type Mutation {
 type Mutation {
   parse_barcode_from_url(
     form: FormBarcodeInput!
-  ): MessageOutput!
+  ): ModelDevice!
 }
 
 type Mutation {
@@ -102,5 +102,10 @@ type MessageOutput {
 
 type UrlOutput {
   url: String!
+}
+
+type ModelDevice {
+  modelNumber: String!
+  serialNumber: String!
 }
 

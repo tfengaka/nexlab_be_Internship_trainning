@@ -1,0 +1,35 @@
+table:
+  name: event_logs
+  schema: public
+event_triggers:
+  - name: scan_barcode
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook: '{{EVENT_BASE_ENDPOINT}}'
+    request_transform:
+      body:
+        action: transform
+        template: |-
+          {
+            "trigger": {
+              "name": {{$body.trigger.name}}
+            },
+            "event": {
+              "op": {{$body.event.op}},
+              "data": {
+                "old": null,
+                "new": {
+                  "id": {{$body.event.data.new.id}},
+                  "type": {{$body.event.data.new.type}}
+                }
+              }
+            }
+          }
+      template_engine: Kriti
+      version: 2

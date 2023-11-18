@@ -11,7 +11,7 @@ export interface IOTPAttributes {
 interface IOTPCreationAttributes extends Optional<IOTPAttributes, 'id' | 'expired_at'> {}
 
 @Table({ tableName: 'otp_code' })
-export default class OTP_Code extends Model<IOTPAttributes, IOTPCreationAttributes> {
+export default class OTPCode extends Model<IOTPAttributes, IOTPCreationAttributes> {
   @Column({
     type: DataType.UUID,
     primaryKey: true,

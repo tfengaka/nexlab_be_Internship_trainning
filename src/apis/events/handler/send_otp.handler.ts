@@ -19,7 +19,7 @@ export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ payload 
   const otp_code = otpGenerator.generate(6, { lowerCaseAlphabets: false, specialChars: false });
   const salt = await bcrypt.genSalt(10);
   const hashOtp = await bcrypt.hash(otp_code, salt);
-  await model.OTP_Code.create({ student_email: email, code: hashOtp });
+  await model.OTPCode.create({ student_email: email, code: hashOtp });
   const mailBody = {
     to: email,
     subject: 'Verification Email',
