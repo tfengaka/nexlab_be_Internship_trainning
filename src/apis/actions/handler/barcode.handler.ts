@@ -16,13 +16,11 @@ export const parse_barcode_from_url: IHandler<IHandlerForm<IBarcodeInput>> = asy
     });
   }
 
-  const jimpImage = await parsedBase64toImageData(form.url);
-
   switch (form.type) {
     case IBarcodeFormat.Barcode:
       return await detectBarcode(form.url);
     case IBarcodeFormat.QRCode:
-      return await detectQRCode(jimpImage);
+      return await detectQRCode(form.url);
     default:
       throw new GraphQLError('Invalid barcode format', {
         extensions: {
@@ -32,18 +30,19 @@ export const parse_barcode_from_url: IHandler<IHandlerForm<IBarcodeInput>> = asy
   }
 };
 
-const parsedBase64toImageData = async (base64: string) => {
-  const jimpImage = await Jimp.read(Buffer.from(base64.split(',')[1], 'base64'));
-  return jimpImage;
-};
-
 async function parseImageUrlToImageData(input: string) {
-  const rawImage = await axios(input, { responseType: 'arraybuffer' }).then((res) => Buffer.from(res.data, 'binary'));
+  const rawImage = await axios
+    .get(input, { responseType: 'arraybuffer' })
+    .then((res) => Buffer.from(res.data, 'binary'));
   const jimpImage = await Jimp.read(rawImage);
   return jimpImage;
 }
 
-const detectBarcode = async (base64: string) => {
+const detectBarcode = async (imageUrl: string) => {
+  const base64 = await axios
+    .get(imageUrl, { responseType: 'arraybuffer' })
+    .then((res) => Buffer.from(res.data, 'binary').toString('base64'));
+
   const barcodeResult = await Quagga.decodeSingle({
     src: base64,
     numOfWorkers: 0, // Needs to be 0 when used within node
@@ -64,7 +63,6 @@ const detectBarcode = async (base64: string) => {
     frequency: 3,
     locator: {
       patchSize: 'small',
-      halfSample: false,
     },
   });
   if (barcodeResult && barcodeResult.codeResult) {
@@ -79,7 +77,8 @@ const detectBarcode = async (base64: string) => {
   });
 };
 
-export const detectQRCode = async (image: Jimp) => {
+export const detectQRCode = async (imageURL: string) => {
+  const image = await parseImageUrlToImageData(imageURL);
   const { data, width, height } = image.bitmap;
   const uint8Array = new Uint8ClampedArray(data);
 

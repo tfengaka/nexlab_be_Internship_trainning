@@ -2,10 +2,10 @@ import { Router } from 'express';
 import { IHandler, IHasuraEvent } from '~/apis/types';
 import { wrapperHandler } from '~/utils';
 
-import { send_otp } from './handler/send_otp.handler';
-import { scan_barcode } from './handler/scanImage.handler';
+import { send_otp } from './handler/send-otp.handler';
+import { get_data_barcode } from './handler/detect-barcode.handler';
 
-const handlers = [send_otp, scan_barcode];
+const handlers = [send_otp, get_data_barcode];
 
 const router = Router();
 router.post(

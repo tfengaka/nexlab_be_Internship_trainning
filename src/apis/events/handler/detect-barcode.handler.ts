@@ -52,7 +52,8 @@ const detectBarcode = async (base64: string) => {
   });
 };
 
-const detectQRCode = async (image: Jimp) => {
+const detectQRCode = async (base64: string) => {
+  const image = await parsedBase64toImageData(base64);
   const { data, width, height } = image.bitmap;
   const uint8Array = new Uint8ClampedArray(data);
 
@@ -75,7 +76,7 @@ export const parseModelDataFromDecodeValue = (decodeValue: string) => ({
   serialNumber: decodeValue.slice(6, -1),
 });
 
-export const scan_barcode: IHandler<{ new: IEventLogAttributes }> = async ({ payload }) => {
+export const get_data_barcode: IHandler<{ new: IEventLogAttributes }> = async ({ payload }) => {
   const { id } = payload.new;
   const eventLog = await Model.EventLog.findByPk(id);
   if (!eventLog) {
@@ -87,14 +88,13 @@ export const scan_barcode: IHandler<{ new: IEventLogAttributes }> = async ({ pay
   }
 
   const { codeType, base64 } = eventLog.metadata as IScanDeviceMetadata;
-  const jimpImage = await parsedBase64toImageData(base64);
   let modelDevice;
   switch (codeType) {
     case IBarcodeFormat.Barcode:
       modelDevice = await detectBarcode(base64);
       break;
     case IBarcodeFormat.QRCode:
-      modelDevice = await detectQRCode(jimpImage);
+      modelDevice = await detectQRCode(base64);
       break;
     default:
       throw new GraphQLError('Invalid barcode format', {

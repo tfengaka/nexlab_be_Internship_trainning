@@ -2,7 +2,7 @@ table:
   name: event_logs
   schema: public
 event_triggers:
-  - name: scan_barcode
+  - name: get_data_barcode
     definition:
       enable_manual: false
       insert:
