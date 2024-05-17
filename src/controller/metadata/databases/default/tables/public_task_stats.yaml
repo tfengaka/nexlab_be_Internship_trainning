@@ -1,0 +1,17 @@
+table:
+  name: task_stats
+  schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - total_completed
+        - total_tasks
+        - total_uncompleted
+        - completed_percent
+        - uncompleted_percent
+        - assignee_id
+      filter:
+        assignee_id:
+          _eq: X-Hasura-User-Id
+    comment: ""

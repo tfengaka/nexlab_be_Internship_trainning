@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import env from '~/config/env';
 import OTPCode from './otp-code';
+import Task from './task';
 import User from './user';
 
 export const sequelize = new Sequelize({
@@ -9,11 +10,11 @@ export const sequelize = new Sequelize({
   database: env.DB_NAME,
   username: env.DB_USER,
   password: env.DB_PASSWORD,
-  models: [User, OTPCode],
+  models: [User, OTPCode, Task],
 });
 
 export const connectDatabase = async () => {
   await sequelize.authenticate();
 };
 
-export default { User,  OTPCode };
+export default { User, OTPCode, Task };

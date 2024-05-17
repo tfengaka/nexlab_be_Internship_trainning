@@ -7,6 +7,7 @@ const env = {
   JWT_SECRET: process.env.JWT_SECRET as string,
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
   PORT: Number(process.env.APP_PORT),
+  HOST: process.env.APP_HOST || '0.0.0.0',
 
   // PostgreSQL
   DB_HOST: process.env.POSTGRES_HOST || 'localhost',

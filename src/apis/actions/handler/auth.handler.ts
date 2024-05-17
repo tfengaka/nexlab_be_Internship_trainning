@@ -18,19 +18,15 @@ const generate_token = (id: string, secret_key: string, expiresIn?: number | str
 
 export const get_user_by_token = async (token: string) => {
   if (!token)
-    throw new GraphQLError('Unauthorized user!', {
-      extensions: {
-        code: 'UNAUTHORIZED',
-      },
+    throw new GraphQLError('Authorized Error!', {
+      extensions: { code: 'UNAUTHORIZED' },
     });
 
   const { sub: student_id } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
   const student = await model.User.findByPk(student_id);
   if (!student)
     throw new GraphQLError('Student are not available!', {
-      extensions: {
-        code: 'NOT_FOUND',
-      },
+      extensions: { code: 'NOT_FOUND' },
     });
   return student;
 };

@@ -1,2 +1,4 @@
 - "!include public_otp_logs.yaml"
-- "!include public_user.yaml"
+- "!include public_task_stats.yaml"
+- "!include public_tasks.yaml"
+- "!include public_users.yaml"

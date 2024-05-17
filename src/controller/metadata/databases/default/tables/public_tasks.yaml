@@ -1,0 +1,59 @@
+table:
+  name: tasks
+  schema: public
+object_relationships:
+  - name: assignee
+    using:
+      foreign_key_constraint_on: assignee_id
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        assignee_id: x-hasura-User-Id
+      columns:
+        - descriptions
+        - id
+        - images
+        - is_compeleted
+        - title
+    comment: ""
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - is_compeleted
+        - order
+        - images
+        - descriptions
+        - status
+        - title
+        - created_at
+        - updated_at
+        - assignee_id
+        - id
+      filter:
+        _and:
+          - assignee_id:
+              _eq: X-Hasura-User-Id
+          - status:
+              _neq: deleted
+      allow_aggregations: true
+    comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - assignee_id
+        - descriptions
+        - id
+        - images
+        - is_compeleted
+        - order
+        - status
+        - title
+      filter:
+        assignee_id:
+          _eq: X-Hasura-User-Id
+      check: null
+    comment: ""

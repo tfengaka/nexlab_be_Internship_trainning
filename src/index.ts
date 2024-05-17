@@ -33,7 +33,7 @@ function initialServer() {
   app.use('/events', eventRouter);
   app.use('/cronjobs', cronRouter);
 
-  app.listen(env.PORT, '0.0.0.0', () => {
+  app.listen(env.PORT, env.HOST, () => {
     console.log(`🚀  App listening on port ${env.PORT}`);
   });
 }

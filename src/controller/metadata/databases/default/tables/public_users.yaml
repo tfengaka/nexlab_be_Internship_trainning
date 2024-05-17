@@ -1,29 +1,26 @@
 table:
-  name: user
+  name: users
   schema: public
-select_permissions:
-  - role: user
-    permission:
-      columns:
-        - email
-        - full_name
-        - password
-        - status
-        - created_at
-        - updated_at
-        - verified_at
-        - id
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
-    comment: ""
+array_relationships:
+  - name: otp_logs
+    using:
+      foreign_key_constraint_on:
+        column: email
+        table:
+          name: otp_logs
+          schema: public
+  - name: tasks
+    using:
+      foreign_key_constraint_on:
+        column: assignee_id
+        table:
+          name: tasks
+          schema: public
 update_permissions:
   - role: user
     permission:
       columns:
-        - email
         - full_name
-        - id
         - password
         - status
       filter:

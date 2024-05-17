@@ -5,3 +5,34 @@
     customization: {}
     forward_client_headers: true
   comment: ""
+  permissions:
+    - role: user
+      definition:
+        schema: |
+          schema {
+            query: Query
+          }
+          type Query {
+            me: User!
+          }
+          type Task {
+            assignee: User!
+            created_at: String
+            description: String!
+            id: ID!
+            images: [String]
+            is_completed: Boolean!
+            order: Int!
+            status: String!
+            title: String!
+            updated_at: String
+          }
+          type User {
+            created_at: String
+            email: String!
+            full_name: String!
+            id: ID!
+            status: String!
+            tasks: [Task]
+            updated_at: String
+          }

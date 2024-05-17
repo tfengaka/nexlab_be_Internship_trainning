@@ -1,6 +1,7 @@
 import { Optional } from 'sequelize';
 import { Column, CreatedAt, DataType, HasMany, Model, Table, UpdatedAt } from 'sequelize-typescript';
 import OTPCode from './otp-code';
+import Task from './task';
 
 export interface IUserAttributes {
   id: string;
@@ -12,7 +13,7 @@ export interface IUserAttributes {
 }
 interface IUserCreationAttributes extends Optional<IUserAttributes, 'id' | 'status' | 'verified_at'> {}
 
-@Table({ tableName: 'user' })
+@Table({ tableName: 'users' })
 class User extends Model<IUserAttributes, IUserCreationAttributes> {
   @Column({
     type: DataType.UUID,
@@ -65,6 +66,9 @@ class User extends Model<IUserAttributes, IUserCreationAttributes> {
 
   @HasMany(() => OTPCode)
   otp_codes!: OTPCode[];
+
+  @HasMany(() => Task)
+  tasks!: Task[];
 }
 
 export default User;

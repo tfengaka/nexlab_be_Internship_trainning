@@ -1,4 +1,4 @@
-type Status = 'pending' | 'active' | 'completed';
+type Status = 'pending' | 'active' | 'completed' | 'deleted';
 type NodeEnv = 'development' | 'production' | 'staging';
 
 interface FormSignInInput {

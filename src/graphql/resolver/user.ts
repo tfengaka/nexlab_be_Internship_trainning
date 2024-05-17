@@ -1,5 +1,5 @@
 import { YogaInitialContext } from 'graphql-yoga';
-import { getCurrentUser } from '~/graphql/service/student.service';
+import { getCurrentUser } from '~/graphql/service/user.service';
 
 const studentResolvers = {
   Query: {
@@ -8,7 +8,6 @@ const studentResolvers = {
         const token = context.request.headers.get('authorization')?.split(' ')[1] as string;
         return await getCurrentUser(token);
       } catch (error) {
-        console.error(error);
         return error;
       }
     },
