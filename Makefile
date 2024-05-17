@@ -1,7 +1,7 @@
 #!make
 include .env
 
-PROJECT=todo-api
+PROJECT=todo_app
 HASURA_DIR=src/controller
 
 dev: 
