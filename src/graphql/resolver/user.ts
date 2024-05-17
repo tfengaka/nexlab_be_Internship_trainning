@@ -1,7 +1,5 @@
 import { YogaInitialContext } from 'graphql-yoga';
-import {
-  getCurrentUser
-} from '~/graphql/service/student.service';
+import { getCurrentUser } from '~/graphql/service/student.service';
 
 const studentResolvers = {
   Query: {

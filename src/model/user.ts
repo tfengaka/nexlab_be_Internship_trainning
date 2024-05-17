@@ -2,7 +2,7 @@ import { Optional } from 'sequelize';
 import { Column, CreatedAt, DataType, HasMany, Model, Table, UpdatedAt } from 'sequelize-typescript';
 import OTPCode from './otp-code';
 
-export interface IStudentAttributes {
+export interface IUserAttributes {
   id: string;
   full_name: string;
   email: string;
@@ -10,10 +10,10 @@ export interface IStudentAttributes {
   verified_at: Date;
   status: Status;
 }
-interface IStudentCreationAttributes extends Optional<IStudentAttributes, 'id' | 'status' | 'verified_at'> {}
+interface IUserCreationAttributes extends Optional<IUserAttributes, 'id' | 'status' | 'verified_at'> {}
 
 @Table({ tableName: 'user' })
-class Student extends Model<IStudentAttributes, IStudentCreationAttributes> {
+class User extends Model<IUserAttributes, IUserCreationAttributes> {
   @Column({
     type: DataType.UUID,
     primaryKey: true,
@@ -67,4 +67,4 @@ class Student extends Model<IStudentAttributes, IStudentCreationAttributes> {
   otp_codes!: OTPCode[];
 }
 
-export default Student;
+export default User;

@@ -1,14 +1,14 @@
+import * as bcrypt from 'bcryptjs';
 import { GraphQLError } from 'graphql';
 import otpGenerator from 'otp-generator';
 import { IHandler } from '~/apis/types';
 import model from '~/model';
-import { IStudentAttributes } from '~/model/student';
+import { IUserAttributes } from '~/model/user';
 import { otp_email_template, sendMail } from '~/utils';
-import * as bcrypt from 'bcryptjs';
 
-export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ payload }) => {
+export const send_otp: IHandler<{ new: IUserAttributes }> = async ({ payload }) => {
   const { email, full_name } = payload.new;
-  const account = await model.Student.findOne({ where: { email } });
+  const account = await model.User.findOne({ where: { email } });
   if (!account) {
     throw new GraphQLError('Cant found account for this email!', {
       extensions: {
@@ -19,7 +19,7 @@ export const send_otp: IHandler<{ new: IStudentAttributes }> = async ({ payload 
   const otp_code = otpGenerator.generate(6, { lowerCaseAlphabets: false, specialChars: false });
   const salt = await bcrypt.genSalt(10);
   const hashOtp = await bcrypt.hash(otp_code, salt);
-  await model.OTPCode.create({ student_email: email, code: hashOtp });
+  await model.OTPCode.create({ email, code: hashOtp });
   const mailBody = {
     to: email,
     subject: 'Verification Email',

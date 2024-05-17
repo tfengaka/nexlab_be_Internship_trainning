@@ -3,9 +3,8 @@ import { IHandler, IHasuraEvent } from '~/apis/types';
 import { wrapperHandler } from '~/utils';
 
 import { send_otp } from './handler/send-otp.handler';
-import { get_data_barcode } from './handler/detect-barcode.handler';
 
-const handlers = [send_otp, get_data_barcode];
+const handlers = [send_otp];
 
 const router = Router();
 router.post(

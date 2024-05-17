@@ -114,19 +114,15 @@ export const refresh_token: IHandler<IHandlerForm<FormRefreshTokenInput>, AuthTo
 export const sign_up: IHandler<IHandlerForm<FormSignUpInput>> = async ({ payload }) => {
   const { email, password, full_name } = payload.form;
   if (!email || !password || !full_name) {
-    throw new GraphQLError('invalid data', {
-      extensions: {
-        code: 'BAD_REQUEST',
-      },
+    throw new GraphQLError('The information you provided is not valid', {
+      extensions: { code: 'BAD_REQUEST' },
     });
   }
 
   const is_already = await model.User.findOne({ where: { email } });
   if (is_already) {
-    throw new GraphQLError('Student already exits!', {
-      extensions: {
-        code: 'CONFLICT',
-      },
+    throw new GraphQLError('User has been already exits!', {
+      extensions: { code: 'CONFLICT' },
     });
   }
   const salt = bcrypt.genSaltSync(10);
@@ -140,44 +136,31 @@ export const otp_verify: IHandler<IHandlerForm<FormOTPVerifyInput>> = async ({ p
   const { email, otp } = payload.form;
 
   if (!email || !otp) {
-    throw new GraphQLError('Invalid data', {
-      extensions: {
-        code: 'BAD_REQUEST',
-      },
+    throw new GraphQLError('The information you provided is not valid', {
+      extensions: { code: 'BAD_REQUEST' },
     });
   }
 
   const student = await model.User.findOne({ where: { email } });
   if (!student) {
-    throw new GraphQLError('Email is incorrect!', {
-      extensions: {
-        code: 'NOT_FOUND',
-      },
+    throw new GraphQLError('Email is not valid!', {
+      extensions: { code: 'NOT_FOUND' },
     });
   }
 
   const otp_record = await model.OTPCode.findOne({
-    where: {
-      email,
-      expired_at: {
-        [Op.gt]: Date.now(),
-      },
-    },
+    where: { email, expired_at: { [Op.gt]: Date.now() } },
   });
   if (otp_record === null) {
     throw new GraphQLError('OTP are incorrect!', {
-      extensions: {
-        code: 'FORBIDDEN',
-      },
+      extensions: { code: 'FORBIDDEN' },
     });
   }
 
   const isMatchOtp = await bcrypt.compare(otp, otp_record.code);
   if (!isMatchOtp) {
     throw new GraphQLError('OTP are incorrect!', {
-      extensions: {
-        code: 'FORBIDDEN',
-      },
+      extensions: { code: 'FORBIDDEN' },
     });
   }
 

@@ -41,9 +41,6 @@ export default class OTPCode extends Model<IOTPAttributes, IOTPCreationAttribute
   @ForeignKey(() => User)
   email!: string;
 
-  @BelongsTo(() => User, {
-    foreignKey: 'otp_user_fk',
-    targetKey: 'email',
-  })
+  @BelongsTo(() => User)
   student!: User;
 }

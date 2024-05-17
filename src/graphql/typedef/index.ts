@@ -1,5 +1,4 @@
-import studentTypeDefs from './student';
-import classTypeDefs from './class';
+import userTypeDefs from './user';
 
 const commonTypes = /* GraphQL */ `
   type MessagesOutput {
@@ -7,5 +6,5 @@ const commonTypes = /* GraphQL */ `
   }
 `;
 
-const rootTypeDefs = commonTypes + studentTypeDefs + classTypeDefs;
+const rootTypeDefs = commonTypes + userTypeDefs;
 export default rootTypeDefs;

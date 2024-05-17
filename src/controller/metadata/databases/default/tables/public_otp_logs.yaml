@@ -1,0 +1,7 @@
+table:
+  name: otp_logs
+  schema: public
+object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: email

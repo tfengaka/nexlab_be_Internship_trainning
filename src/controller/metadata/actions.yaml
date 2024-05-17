@@ -2,14 +2,14 @@ actions:
   - name: change_password
     definition:
       kind: synchronous
-      handler: "{{ACTION_BASE_ENDPOINT}}"
+      handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
       - role: user
   - name: otp_verify
     definition:
       kind: synchronous
-      handler: "{{ACTION_BASE_ENDPOINT}}"
+      handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
       - role: user
@@ -17,14 +17,14 @@ actions:
   - name: refresh_token
     definition:
       kind: synchronous
-      handler: "{{ACTION_BASE_ENDPOINT}}"
+      handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
       - role: user
   - name: resend_otp
     definition:
       kind: synchronous
-      handler: "{{ACTION_BASE_ENDPOINT}}"
+      handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
       - role: user
@@ -32,7 +32,7 @@ actions:
   - name: sign_in
     definition:
       kind: synchronous
-      handler: "{{ACTION_BASE_ENDPOINT}}"
+      handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
       - role: user
@@ -40,7 +40,7 @@ actions:
   - name: sign_up
     definition:
       kind: synchronous
-      handler: "{{ACTION_BASE_ENDPOINT}}"
+      handler: '{{ACTION_BASE_ENDPOINT}}'
       forward_client_headers: true
     permissions:
       - role: anonymous
