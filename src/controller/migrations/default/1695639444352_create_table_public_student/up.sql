@@ -1,4 +1,4 @@
-CREATE TABLE "public"."student" (
+CREATE TABLE "public"."user" (
   "id" uuid NOT NULL DEFAULT gen_random_uuid(),
   "full_name" text NOT NULL,
   "email" text NOT NULL,

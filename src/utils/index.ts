@@ -13,7 +13,6 @@ interface MailRequestOptions {
   html?: string;
 }
 
-export const OUTPUT_DIR = `${__dirname}/../../dist/xlsx`;
 
 export function wrapperHandler<Body = Record<string, any>>(
   handler: IHandler[],
@@ -156,7 +155,7 @@ export const otp_email_template = (name: string, otp: string) => `
             color: #8c8c8c;
           ">
         Need help? Ask at
-        <a href="mailto:nthoa2.dev@gmail.com" style="color: #499fb6; text-decoration: none;">nthoa2.dev</a>
+        <a href="mailto:nthoa2.dev@gmail.com" style="color: #499fb6; text-decoration: none;">Hoa Nguyen Thanh</a>
         or visit our
         <a href="" target="_blank" style="color: #499fb6; text-decoration: none;">Help Center</a>
       </p>

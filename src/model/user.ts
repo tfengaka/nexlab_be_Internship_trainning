@@ -1,8 +1,6 @@
 import { Optional } from 'sequelize';
-import { BelongsToMany, Column, CreatedAt, DataType, HasMany, Model, Table, UpdatedAt } from 'sequelize-typescript';
-import Class from './class';
-import Enrollment from './enrollment';
-import OTPCode from './otp_code';
+import { Column, CreatedAt, DataType, HasMany, Model, Table, UpdatedAt } from 'sequelize-typescript';
+import OTPCode from './otp-code';
 
 export interface IStudentAttributes {
   id: string;
@@ -14,7 +12,7 @@ export interface IStudentAttributes {
 }
 interface IStudentCreationAttributes extends Optional<IStudentAttributes, 'id' | 'status' | 'verified_at'> {}
 
-@Table({ tableName: 'student' })
+@Table({ tableName: 'user' })
 class Student extends Model<IStudentAttributes, IStudentCreationAttributes> {
   @Column({
     type: DataType.UUID,
@@ -64,9 +62,6 @@ class Student extends Model<IStudentAttributes, IStudentCreationAttributes> {
 
   @UpdatedAt
   updated_at!: Date;
-
-  @BelongsToMany(() => Class, () => Enrollment)
-  class_enrollment!: Class[];
 
   @HasMany(() => OTPCode)
   otp_codes!: OTPCode[];

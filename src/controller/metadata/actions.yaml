@@ -2,50 +2,29 @@ actions:
   - name: change_password
     definition:
       kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}'
+      handler: "{{ACTION_BASE_ENDPOINT}}"
       forward_client_headers: true
     permissions:
       - role: user
-  - name: enroll_class
-    definition:
-      kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}'
-      forward_client_headers: true
-    permissions:
-      - role: user
-  - name: export_student_stats
-    definition:
-      kind: ""
-      handler: '{{ACTION_BASE_ENDPOINT}}'
-      forward_client_headers: true
-  - name: get_excel_data_from_url
-    definition:
-      kind: ""
-      handler: '{{ACTION_BASE_ENDPOINT}}'
-      forward_client_headers: true
   - name: otp_verify
     definition:
       kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}'
+      handler: "{{ACTION_BASE_ENDPOINT}}"
       forward_client_headers: true
     permissions:
       - role: user
       - role: anonymous
-  - name: parse_barcode_from_url
-    definition:
-      kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}'
   - name: refresh_token
     definition:
       kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}'
+      handler: "{{ACTION_BASE_ENDPOINT}}"
       forward_client_headers: true
     permissions:
       - role: user
   - name: resend_otp
     definition:
       kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}'
+      handler: "{{ACTION_BASE_ENDPOINT}}"
       forward_client_headers: true
     permissions:
       - role: user
@@ -53,7 +32,7 @@ actions:
   - name: sign_in
     definition:
       kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}'
+      handler: "{{ACTION_BASE_ENDPOINT}}"
       forward_client_headers: true
     permissions:
       - role: user
@@ -61,7 +40,7 @@ actions:
   - name: sign_up
     definition:
       kind: synchronous
-      handler: '{{ACTION_BASE_ENDPOINT}}'
+      handler: "{{ACTION_BASE_ENDPOINT}}"
       forward_client_headers: true
     permissions:
       - role: anonymous
@@ -73,11 +52,8 @@ custom_types:
     - name: FormRefreshTokenInput
     - name: FormOTPVerifyInput
     - name: FormEditPasswordInput
-    - name: FormBarcodeInput
   objects:
     - name: AuthTokenOutput
     - name: SignUpOutput
     - name: MessageOutput
-    - name: UrlOutput
-    - name: ModelDevice
   scalars: []

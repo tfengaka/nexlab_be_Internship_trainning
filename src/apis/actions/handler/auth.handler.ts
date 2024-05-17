@@ -25,7 +25,7 @@ export const get_user_by_token = async (token: string) => {
     });
 
   const { sub: student_id } = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
-  const student = await model.Student.findByPk(student_id);
+  const student = await model.User.findByPk(student_id);
   if (!student)
     throw new GraphQLError('Student are not available!', {
       extensions: {
@@ -45,7 +45,7 @@ export const sign_in: IHandler<IHandlerForm<FormSignInInput>, AuthToken> = async
     });
   }
 
-  const student = await model.Student.findOne({ where: { email } });
+  const student = await model.User.findOne({ where: { email } });
   if (!student) {
     throw new GraphQLError('Email or password are incorrect!', {
       extensions: {
@@ -121,7 +121,7 @@ export const sign_up: IHandler<IHandlerForm<FormSignUpInput>> = async ({ payload
     });
   }
 
-  const is_already = await model.Student.findOne({ where: { email } });
+  const is_already = await model.User.findOne({ where: { email } });
   if (is_already) {
     throw new GraphQLError('Student already exits!', {
       extensions: {
@@ -131,7 +131,7 @@ export const sign_up: IHandler<IHandlerForm<FormSignUpInput>> = async ({ payload
   }
   const salt = bcrypt.genSaltSync(10);
   const hash_Password = bcrypt.hashSync(password, salt);
-  const student = await model.Student.create({ email, password: hash_Password, full_name, status: 'pending' });
+  const student = await model.User.create({ email, password: hash_Password, full_name, status: 'pending' });
 
   return { email: student.email, full_name: student.full_name };
 };
@@ -147,7 +147,7 @@ export const otp_verify: IHandler<IHandlerForm<FormOTPVerifyInput>> = async ({ p
     });
   }
 
-  const student = await model.Student.findOne({ where: { email } });
+  const student = await model.User.findOne({ where: { email } });
   if (!student) {
     throw new GraphQLError('Email is incorrect!', {
       extensions: {
@@ -158,7 +158,7 @@ export const otp_verify: IHandler<IHandlerForm<FormOTPVerifyInput>> = async ({ p
 
   const otp_record = await model.OTPCode.findOne({
     where: {
-      student_email: email,
+      email,
       expired_at: {
         [Op.gt]: Date.now(),
       },
@@ -189,7 +189,7 @@ export const otp_verify: IHandler<IHandlerForm<FormOTPVerifyInput>> = async ({ p
 };
 
 export const resend_otp: IHandler<{ email: string }> = async ({ payload }) => {
-  const account = await model.Student.findOne({ where: { email: payload.email } });
+  const account = await model.User.findOne({ where: { email: payload.email } });
   if (!account) {
     throw new GraphQLError('Email is incorrect!', {
       extensions: {
@@ -202,11 +202,11 @@ export const resend_otp: IHandler<{ email: string }> = async ({ payload }) => {
       message: 'This account has been verified!',
     };
   }
-  await model.OTPCode.destroy({ where: { student_email: payload.email } });
+  await model.OTPCode.destroy({ where: { email: payload.email } });
   const otp_code = otpGenerator.generate(6, { lowerCaseAlphabets: false, specialChars: false });
   const salt = await bcrypt.genSalt(10);
   const hashOtp = await bcrypt.hash(otp_code, salt);
-  await model.OTPCode.create({ student_email: payload.email, code: hashOtp });
+  await model.OTPCode.create({ email: payload.email, code: hashOtp });
   const mailBody = {
     to: payload.email,
     subject: 'Verification Email',

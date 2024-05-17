@@ -1,14 +1,9 @@
-import studentResolvers from './student';
-import classResolvers from './class';
+import userResolvers from './user';
 const rootResolvers = {
   Query: {
-    ...studentResolvers.Query,
-    ...classResolvers.Query,
+    ...userResolvers.Query,
   },
-  Mutation: {
-    ...studentResolvers.Mutation,
-    ...classResolvers.Mutation,
-  },
+  
 };
 
 export default rootResolvers;

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import env from '~/config/env';
 import models from '~/model';
 
-export const getCurrentStudent = async (token: string, hasClasses: boolean = true) => {
+export const getCurrentUser = async (token: string) => {
   if (!token)
     throw new GraphQLError('Invalid Token!', {
       extensions: {
@@ -11,7 +11,7 @@ export const getCurrentStudent = async (token: string, hasClasses: boolean = tru
       },
     });
 
-  let studentId = '';
+  let userId = '';
   jwt.verify(token, env.JWT_SECRET, (err, decoded) => {
     if (err)
       throw new GraphQLError(err.message, {
@@ -20,72 +20,17 @@ export const getCurrentStudent = async (token: string, hasClasses: boolean = tru
         },
       });
     if (typeof decoded !== 'string') {
-      studentId = decoded?.sub as string;
+      userId = decoded?.sub as string;
     }
   });
 
-  const student = hasClasses
-    ? await models.Student.findByPk(studentId, {
-        include: {
-          model: models.Class,
-          as: 'class',
-          attributes: {
-            include: ['id', 'class_name'],
-          },
-        },
-      })
-    : await models.Student.findByPk(studentId);
+  const student = await models.User.findByPk(userId);
   if (!student)
     throw new GraphQLError('Student not found!', {
       extensions: {
         code: 'NOT_FOUND',
       },
     });
-  console.log(student);
   return student;
 };
 
-export const getAllStudents = async () => {
-  return await models.Student.findAll();
-};
-
-export const removeStudentByPk = async (id: string) => {
-  if (!id)
-    throw new GraphQLError('Invalid ID!', {
-      extensions: {
-        code: 'BAD_REQUEST',
-      },
-    });
-
-  const student = await models.Student.findByPk(id);
-  if (!student)
-    throw new GraphQLError('Student not found!', {
-      extensions: {
-        code: 'NOT_FOUND',
-      },
-    });
-
-  const name = student.full_name;
-  await student.destroy();
-
-  return {
-    messages: `Student ${name} has been removed!`,
-  };
-};
-
-export const updateStudentDataByPk = async (id: string, data: FormUpdateStudent) => {
-  const student = await models.Student.findByPk(id);
-  if (!student)
-    throw new GraphQLError('Student not found!', {
-      extensions: {
-        code: 'NOT_FOUND',
-      },
-    });
-
-  student.full_name = data.full_name;
-  student.email = data.email;
-
-  student.save();
-
-  return student;
-};

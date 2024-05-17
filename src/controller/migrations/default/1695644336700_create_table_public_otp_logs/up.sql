@@ -1,4 +1,4 @@
-CREATE TABLE "public"."otp_code" (
+CREATE TABLE "public"."otp_logs" (
   "id" uuid NOT NULL DEFAULT gen_random_uuid(),
   "code" text NOT NULL,
   "student_email" text NOT NULL,
