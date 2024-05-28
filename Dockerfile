@@ -29,4 +29,4 @@ COPY yarn.lock .
 RUN yarn
 COPY . /app
 
-CMD ["yarn", "start"]
+CMD ["yarn", "dev"]
