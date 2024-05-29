@@ -26,7 +26,7 @@ class Task extends Model<ITaskAttributes, ITaskCreation> {
   title!: string;
 
   @Column({ type: DataType.TEXT })
-  description!: string;
+  descriptions!: string;
 
   @Column({ type: DataType.JSONB })
   images!: Array<string>;

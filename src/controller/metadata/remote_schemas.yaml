@@ -1,6 +1,6 @@
 - name: yoga-graphql
   definition:
-    url: '{{REMOTE_SCHEMA_ENDPOINT}}'
+    url: "{{REMOTE_SCHEMA_ENDPOINT}}"
     timeout_seconds: 60
     customization: {}
     forward_client_headers: true
@@ -18,7 +18,7 @@
           type Task {
             assignee: User!
             created_at: String
-            description: String!
+            descriptions: String!
             id: ID!
             images: [String]
             is_completed: Boolean!

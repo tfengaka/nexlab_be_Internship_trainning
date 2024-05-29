@@ -7,7 +7,7 @@ const studentTypeDefs = /* GraphQL */ `
   type Task {
     id: ID!
     title: String!
-    description: String!
+    descriptions: String!
     images: [String]
     order: Int!
     status: String!

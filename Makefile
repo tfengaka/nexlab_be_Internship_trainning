@@ -20,7 +20,7 @@ console:
 	cd ${HASURA_DIR} && hasura console --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
 
 migrate:
-	cd ${HASURA_DIR} && hasura migrate apply --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET} --all-databases && hasura metadata apply --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
+	cd ${HASURA_DIR} && hasura migrate apply --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET} --all-databases && hasura metadata apply --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET} && hasura metadata reload --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
 
 metadata-reload:
 	cd ${HASURA_DIR} && hasura metadata reload --admin-secret ${HASURA_GRAPHQL_ADMIN_SECRET}
