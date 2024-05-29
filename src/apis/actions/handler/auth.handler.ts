@@ -65,7 +65,7 @@ export const sign_in: IHandler<IHandlerForm<FormSignInInput>, AuthToken> = async
       },
     });
   }
-  const access_token = generate_token(student.id, env.JWT_SECRET, '1h');
+  const access_token = generate_token(student.id, env.JWT_SECRET, '24h');
   const refresh_token = generate_token(student.id, env.JWT_REFRESH_SECRET, '30d');
   const res = { access_token, refresh_token };
   refresh_tokens[student.id] = res;
