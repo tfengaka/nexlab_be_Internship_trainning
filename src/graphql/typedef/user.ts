@@ -14,7 +14,6 @@ const studentTypeDefs = /* GraphQL */ `
     is_completed: Boolean!
     created_at: String
     updated_at: String
-    assignee: User!
   }
 
   type User {

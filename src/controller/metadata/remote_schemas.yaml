@@ -16,7 +16,6 @@
             me: User!
           }
           type Task {
-            assignee: User!
             created_at: String
             descriptions: String!
             id: ID!

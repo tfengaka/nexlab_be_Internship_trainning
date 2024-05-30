@@ -15,14 +15,14 @@ insert_permissions:
         - descriptions
         - id
         - images
-        - is_compeleted
+        - is_completed
         - title
     comment: ""
 select_permissions:
   - role: user
     permission:
       columns:
-        - is_compeleted
+        - is_completed
         - order
         - images
         - descriptions
@@ -48,7 +48,7 @@ update_permissions:
         - descriptions
         - id
         - images
-        - is_compeleted
+        - is_completed
         - order
         - status
         - title

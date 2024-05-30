@@ -31,6 +31,9 @@ class Task extends Model<ITaskAttributes, ITaskCreation> {
   @Column({ type: DataType.JSONB })
   images!: Array<string>;
 
+  @Column({ type: DataType.BOOLEAN })
+  is_completed!: boolean;
+
   @Column({ type: DataType.INTEGER })
   order!: number;
 

@@ -1,11 +1,11 @@
 CREATE TABLE "public"."tasks" (
   "id"            UUID        DEFAULT gen_random_uuid(),
   "title"         TEXT        NOT NULL,
-  "descriptions"  TEXT        NOT NULL,
+  "descriptions"  TEXT,
   "images"        JSONB       DEFAULT jsonb_build_array(),
   "status"        TEXT        DEFAULT 'active',
   "order"         INT         NOT NULL,
-  "is_compeleted" BOOLEAN     DEFAULT FALSE,
+  "is_completed"  BOOLEAN     DEFAULT FALSE,
   "assignee_id"   UUID        NOT NULL,
   "created_at"    TIMESTAMPTZ DEFAULT now(),
   "updated_at"    TIMESTAMPTZ DEFAULT now(),
@@ -29,10 +29,10 @@ CREATE VIEW "public"."task_stats" AS
 SELECT
   "assignee_id",
   COUNT(*) AS "total_tasks",
-  SUM(CASE WHEN "is_compeleted" = TRUE THEN 1 ELSE 0 END) AS "total_completed",
-  CAST(SUM(CASE WHEN "is_compeleted" = TRUE THEN 1 ELSE 0 END) AS FLOAT) / COUNT(*) * 100 AS "completed_percent",
-  SUM(CASE WHEN "is_compeleted" = FALSE THEN 1 ELSE 0 END) AS "total_uncompleted",
-  CAST(SUM(CASE WHEN "is_compeleted" = FALSE THEN 1 ELSE 0 END) AS FLOAT) / COUNT(*) * 100 AS "uncompleted_percent"
+  SUM(CASE WHEN "is_completed" = TRUE THEN 1 ELSE 0 END) AS "total_completed",
+  CAST(SUM(CASE WHEN "is_completed" = TRUE THEN 1 ELSE 0 END) AS FLOAT) / COUNT(*) * 100 AS "completed_percent",
+  SUM(CASE WHEN "is_completed" = FALSE THEN 1 ELSE 0 END) AS "total_uncompleted",
+  CAST(SUM(CASE WHEN "is_completed" = FALSE THEN 1 ELSE 0 END) AS FLOAT) / COUNT(*) * 100 AS "uncompleted_percent"
 FROM
   "public"."tasks"
 GROUP BY
